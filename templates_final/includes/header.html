@@ -64,92 +64,22 @@
                     </ul>
         </div>
         <ul class="rd-navbar-nav">
-            <li class="rd-nav-item active"><a class="rd-nav-link" href="index.html">Home</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
-            <ul class="rd-menu rd-navbar-dropdown">
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="index-variant-2.html">Home Variant 2</a>
+            {% for item in nav_menu %}
+                <li class="rd-nav-item {% if item.is_active %}active{% endif %}">
+                    <a class="rd-nav-link" href="{{ item.url }}">{{ item.label }}</a>
+                    
+                    {# Check if this menu item has a populated children list #}
+                    {% if item.children %}
+                        <ul class="rd-menu rd-navbar-dropdown">
+                            {% for child in item.children %}
+                                <li class="rd-dropdown-item">
+                                    <a class="rd-dropdown-link" href="{{ child.url }}">{{ child.label }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="categories-grid.html">Categories Grid</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="categories-masonry.html">Categories Masonry</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="categories-list.html">Categories List</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="#">Header Setting</a>
-                <ul class="rd-menu rd-navbar-dropdown">
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="header-variant-1.html">Header variant 1</a>
-                    </li>
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="header-variant-2.html">Header variant 2</a>
-                    </li>
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="header-default.html">Header Default</a>
-                    </li>
-                </ul>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="#">Footer Settings</a>
-                <ul class="rd-menu rd-navbar-dropdown">
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="footer-variant-1.html">Footer variant 1</a>
-                    </li>
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="footer-variant-2.html">Footer variant 2</a>
-                    </li>
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="footer-default.html">Footer Default</a>
-                    </li>
-                </ul>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="#">Sidebar Settings</a>
-                <ul class="rd-menu rd-navbar-dropdown">
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="index.html">Right Sidebar</a>
-                    </li>
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="index-sidebar-left.html">Left Sidebar</a>
-                    </li>
-                    <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="index-sidebar-none.html">No Sidebar</a>
-                    </li>
-                </ul>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="typography.html">Typography</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404.html">404</a>
-                </li>
-            </ul>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="politics.html">Politics</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="business.html">Business</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="sports.html">Sports</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="culture.html">Culture</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="tech.html">Tech</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="world.html">World</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="about.html">About</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
-            </li>
-            <li class="rd-nav-item"><a class="rd-nav-link" href="#">Post Types</a>
-            <ul class="rd-menu rd-navbar-dropdown">
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-default.html">Post Default</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-audio.html">Post With Audio</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-facebook.html">Post With Facebook</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-link.html">Post With Link</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-quote.html">Post With Quote</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-quote-2.html">Post With Quote-2</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-slider.html">Post With Slider</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-twitter.html">Post With Twitter</a>
-                </li>
-                <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="post-with-video.html">Post With Video</a>
-                </li>
-            </ul>
-            </li>
+            {% endfor %}
         </ul>
         </div>
     </div>

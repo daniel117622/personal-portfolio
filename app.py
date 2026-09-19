@@ -4,8 +4,13 @@ from jinja2 import TemplateNotFound
 from logger import get_logger
 
 from loader import ABTestingLoader
+from common.nav import get_main_menu
 
 app = Flask(__name__)
+@app.context_processor
+def inject_global_variables():
+    return dict(nav_menu=get_main_menu())
+
 logger = get_logger()
 
 # Inject the custom loader
