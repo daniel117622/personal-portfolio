@@ -1,0 +1,80 @@
+      <footer class="page-footer footer-default">
+        <div class="container container-wide">
+          <hr class="divider divider-lg offset-0">
+          <div class="row text-center text-xl-left row-narrow-60 row-30">
+            <div class="offset-md-2 col-md-8 col-xl-4 col-xxl-3 offset-xl-0 order-xl-4">
+              <h3 class="font-weight-regular font-italic font-accent">Get latest news delivered daily!</h3>
+              <div>
+                <p>We will send you breaking news right to your inbox</p>
+              </div>
+              <form class="offset-top-25 rd-mailform-inline rd-mailform form-inline-flex d-sm-flex" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="{{ url_for('static', filename='bat/rd-mailform.php') }}">
+                <div class="form-wrap mfInput">
+                  <input id="subscribe-form-email-2" type="text" name="email" data-constraints="@Email @Required">
+                  <label class="form-label" for="subscribe-form-email-2">Your E-mail</label>
+                </div>
+                <button class="btn btn-warning">Subscribe</button>
+              </form>
+              <div class="rd-mailform-validate"></div>
+            </div>
+            <div class="offset-md-1 col-md-10 col-xl-4 col-xxl-3 offset-xl-0 offset-top-45 offset-lg-top-0 order-xl-3">
+              <h6 class="font-weight-bold">Tags</h6>
+              <div class="offset-top-20">
+                <ul class="unit-spacing-xs unit small font-italic flex-wrap">
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">News</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="world.html">World</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="tech.html">Tech</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="business.html">Business</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">Army</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">Travel</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="sports.html">Sport</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="culture.html">Culture</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">Commodities</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">NBA</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">War</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">Gadgets</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">Health</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">Social</a></li>
+                  <li><a class="btn btn-default btn-sm btn-rect font-weight-regular font-accent" href="politics.html">Money</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xxl-3 col-xl-2 offset-top-45 offset-lg-top-0">
+              <h6>Categories</h6>
+              <ul class="small text-center text-xl-left list-unstyled list font-italic font-accent">
+                <li><a href="politics.html">News</a></li>
+                <li><a href="politics.html">Politics</a></li>
+                <li><a href="business.html">Business</a></li>
+                <li><a href="sports.html">Sport</a></li>
+                <li><a href="culture.html">Culture</a></li>
+                <li><a href="tech.html">Tech</a></li>
+                <li><a href="politics.html">Travel</a></li>
+                <li><a href="politics.html">Videos</a></li>
+              </ul>
+            </div>
+            <div class="col-sm-6 col-xl-2 col-xxl-3 offset-top-45 offset-lg-top-0">
+              <h6>Information</h6>
+              <ul class="small text-center text-xl-left list-unstyled list font-italic font-accent">
+                <li><a href="about-us.html">About us</a></li>
+                <li><a href="contacts.html">Contact us</a></li>
+                <li><a href="typography.html">Typography</a></li>
+              </ul>
+            </div>
+          </div>
+          <hr class="divider divider-offset-top-52">
+          <div class="row text-left row-30">
+            <div class="col-lg-5 order-lg-1 text-center text-lg-right">
+                    <ul class="list-inline-0">
+                      <li><a class="icon icon-circle fa-facebook icon-default " href="#"></a></li>
+                      <li><a class="icon icon-circle fa-twitter icon-default " href="#"></a></li>
+                      <li><a class="icon icon-circle fa-instagram icon-default " href="#"></a></li>
+                      <li><a class="icon icon-circle fa-youtube icon-default " href="#"></a></li>
+                      <li><a class="icon icon-circle fa-feed icon-default " href="#"></a></li>
+                    </ul>
+            </div>
+            <div class="col-lg-7 text-center text-lg-left d-flex align-items-center flex-wrap justify-content-center justify-content-lg-start">
+              <!--Brand--><a class="brand" href="index.html"><img class="brand-logo-dark" src="{{ url_for('static', filename='images/logo-default-235x60.png') }}" alt="" width="117" height="30"/><img class="brand-logo-light" src="{{ url_for('static', filename='images/logo-footer-235x72.png') }}" alt="" width="117" height="36"/></a>
+              <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span class="rdc-today_date"></span><span>&nbsp;</span><span>News King, Inc</span><span>.&nbsp;</span><a class="privacy-link" href="privacy-policy.html">Privacy Policy</a></p>
+            </div>
+          </div>
+        </div>
+      </footer>
