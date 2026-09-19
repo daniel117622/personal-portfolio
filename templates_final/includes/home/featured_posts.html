@@ -1,0 +1,111 @@
+<section class="section section-md bg-default">
+  <div class="container container-wide container-wide">
+    <div class="row row-narrow-8 row-8">
+      
+      <!-- Main Topic -->
+      <div class="col-xl-6">
+        <div class="post post-variant-1">
+          <div class="post-inner"><img class="img-responsive post-image" style="object-fit: cover; width: 100%; aspect-ratio: 860/662;" src="{{ main_topic.img }}" alt="">
+            <div class="post-caption">
+              <ul>
+                <li><a href="{{ main_topic.href }}"><span class="badge badge-warning">{{ main_topic.category }}</span></a></li>
+              </ul>
+              <div>
+                <div class="h1"><a href="{{ main_topic.href }}">{{ main_topic.title }}</a></div>
+                <div class="post-meta post-meta-hidden-outer">
+                  <div class="post-meta-hidden">
+                    <div class="icon text-gray icon-lg material-icons-share">
+                      <ul>
+                        <li><a class="icon fa fa-github" href="{{ main_topic.share_link }}"></a></li>
+                        <li><a class="icon fa fa-twitter" href="#"></a></li>
+                        <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <a class="post-meta-time" href="{{ main_topic.href }}">
+                    <time class="htmlme">{{ main_topic.date }}</time>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Topics -->
+      <div class="col-xl-6">
+        <div class="row row-narrow-8 row-8">
+          
+        <!-- First column of secondary topics (Indices 0 and 1) -->
+        <div class="col-md-6">
+        {% for topic in topics[:2] %}
+        <div class="post post-variant-1">
+            <div class="post-inner">
+            <img class="img-responsive post-image" style="object-fit: cover; width: 100%; aspect-ratio: 426/327;" src="{{ topic.img }}" alt="">
+            <div class="post-caption">
+                <ul>
+                <li><a href="{{ topic.href }}"><span class="badge badge-warning">{{ topic.category }}</span></a></li>
+                </ul>
+                <div>
+                <div class="h5"><a href="{{ topic.href }}">{{ topic.title }}</a></div>
+                <div class="post-meta post-meta-hidden-outer">
+                    <div class="post-meta-hidden">
+                    <div class="icon text-gray icon-lg material-icons-share">
+                        <ul>
+                        <li><a class="icon fa fa-github" href="{{ topic.share_link }}"></a></li>
+                        <li><a class="icon fa fa-twitter" href="#"></a></li>
+                        <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                        </ul>
+                    </div>
+                    </div>
+                    <div>
+                    <a class="post-meta-time" href="{{ topic.href }}">
+                        <time>{{ topic.date }}</time>
+                    </a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+          <!-- Second column of secondary topics (Indices 2 and 3) -->
+          <div class="col-md-6">
+            {% for topic in topics[2:4] %}
+            <div class="post post-variant-1">
+              <div class="post-inner"><img class="img-responsive post-image" style="object-fit: cover; width: 100%; aspect-ratio: 426/327;" src="{{ topic.img }}" alt="">
+                <div class="post-caption">
+                  <ul>
+                    <li><a href="{{ topic.href }}"><span class="badge badge-warning">{{ topic.category }}</span></a></li>
+                  </ul>
+                  <div>
+                    <div class="h5"><a href="{{ topic.href }}">{{ topic.title }}</a></div>
+                    <div class="post-meta post-meta-hidden-outer">
+                      <div class="post-meta-hidden">
+                        <div class="icon text-gray icon-lg material-icons-share">
+                          <ul>
+                            <li><a class="icon fa fa-github" href="{{ topic.share_link }}"></a></li>
+                            <li><a class="icon fa fa-twitter" href="#"></a></li>
+                            <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div>
+                        <a class="post-meta-time" href="{{ topic.href }}">
+                          <time>{{ topic.date }}</time>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

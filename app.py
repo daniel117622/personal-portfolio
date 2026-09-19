@@ -4,12 +4,13 @@ from jinja2 import TemplateNotFound
 from logger import get_logger
 
 from loader import ABTestingLoader
-from common.nav import get_main_menu
+from dtos.common.nav import get_main_menu
+from dtos.common.footer import get_footer_menu
 
 app = Flask(__name__)
 @app.context_processor
 def inject_global_variables():
-    return dict(nav_menu=get_main_menu())
+    return dict(nav_menu=get_main_menu(),footer_menu=get_footer_menu())
 
 logger = get_logger()
 
@@ -53,11 +54,16 @@ def catch_all(page_name):
         abort(404)
 
 # RENDERIZA LA PLANTILLA TRANSFORMADA A JINJA
+from dtos.homepage.homepage import get_main_topics , HeaderTopics
 @app.route("/migration")
 @app.route("/migration/")
 def migration_index():
-    return render_template("index.html")
-
+    header_data : HeaderTopics = get_main_topics()
+    return render_template(
+        "index.html", 
+        main_topic = header_data.main_topic,
+        topics     = header_data.topics
+    )
 @app.route("/migration/<path:page_name>")
 def migration_catch_all(page_name):
     if not page_name.endswith(".html"):
