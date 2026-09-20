@@ -3,6 +3,7 @@ from typing import List
 from flask import Flask, render_template, abort, request, has_request_context
 from jinja2 import TemplateNotFound
 from dtos.articles.articles import ArticleSummary, get_articles
+from dtos.homepage.socials import SocialActivity, get_social_activity
 from logger import get_logger
 
 from loader import ABTestingLoader
@@ -50,12 +51,14 @@ def index():
     header_data: HeaderTopics = get_main_topics()
     devlogs  : List[DevBlogSummary] = get_devlogs()
     articles : List[ArticleSummary] = get_articles()
+    socials  : SocialActivity       = get_social_activity()
     return render_template(
         "index.html",
         main_topic=header_data.main_topic,
         topics=header_data.topics,
         devlogs=devlogs,
-        articles=articles
+        articles=articles,
+        socials=socials
     )
 
 
