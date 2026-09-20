@@ -1,12 +1,15 @@
 import os
+from typing import List
 from flask import Flask, render_template, abort, request, has_request_context
 from jinja2 import TemplateNotFound
+from dtos.articles.articles import ArticleSummary, get_articles
 from logger import get_logger
 
 from loader import ABTestingLoader
 from dtos.common.nav import get_main_menu
 from dtos.common.footer import get_footer_menu
 from dtos.homepage.homepage import get_main_topics, HeaderTopics
+from dtos.devlogs.devlogs import DevBlogSummary, get_devlogs
 
 app = Flask(__name__)
 
@@ -45,10 +48,14 @@ def handle_exception(error):
 @app.route("/")
 def index():
     header_data: HeaderTopics = get_main_topics()
+    devlogs  : List[DevBlogSummary] = get_devlogs()
+    articles : List[ArticleSummary] = get_articles()
     return render_template(
         "index.html",
         main_topic=header_data.main_topic,
         topics=header_data.topics,
+        devlogs=devlogs,
+        articles=articles
     )
 
 

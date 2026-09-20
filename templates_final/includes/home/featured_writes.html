@@ -1,0 +1,423 @@
+<section class="section-md bg-default">
+<div class="container container-wide">
+    <div class="row text-lg-left row-narrow-60">
+    <div class="col-xl-8">
+        <div class="tabs-custom tabs-horizontal tabs-corporate responsive-tabs-variant-2" id="tabs-1">
+        <div class="heading-divider">
+            <h2>My Dev-Blogs</h2>
+        </div>
+
+        <div class="row row-20 row-narrow-60">
+        {% for devlog in devlogs %}
+        <!-- Use loop index to add the top offset class for items after the first row -->
+        <div
+            class="text-md-left col-sm-10 col-md-6 col-lg-4 {% if loop.index > 3 %}offset-top-45{% endif %}"
+        >
+            <div class="post post-variant-3">
+            <div class="post-inner">
+                <!-- Assumes devlog.img just holds the filename like 'portfolio.jpg' -->
+                <img
+                class="post-image"
+                src="{{ url_for('static', filename='images/homepage/' ~ devlog.img) }}"
+                alt="{{ devlog.title }}"
+                />
+                <div class="post-caption">
+                <ul>
+                    <li>
+                    <a href="#">
+                        <span class="badge badge-warning">{{ devlog.category }}</span>
+                    </a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+            <div class="h5 font-weight-bold">
+                <a
+                class="post-link"
+                href="{{ devlog.git_repo }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                {{ devlog.title }}
+                </a>
+            </div>
+            <div class="post-meta post-meta-hidden-outer">
+                <div class="post-meta-hidden">
+                <div class="icon text-gray icon-lg material-icons-share">
+                    <ul>
+                    <li><a class="icon fa fa-github" href="{{ devlog.git_repo }}"></a></li>
+                    <li><a class="icon fa fa-twitter" href="#"></a></li>
+                    <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                    </ul>
+                </div>
+                </div>
+                <div>
+                <a class="post-meta-time" href="#">
+                    <time datetime="{{ devlog.time_posted }}"
+                    >{{ devlog.time_posted }}</time
+                    >
+                </a>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Insert the dashed divider after every 3rd item, but not if it's the last item -->
+        {% if loop.index % 3 == 0 and not loop.last %}
+        <div class="col-xxl-12 d-none d-lg-block mb-0">
+            <hr class="divider divider-dashed mt-0" />
+            <div class="hidden"></div>
+        </div>
+        {% endif %} 
+        
+        {% endfor %}
+        </div>
+
+
+        <div class="heading-divider offset-top-45 offset-md-top-25">
+        <h2>Tech Articles / Non - Repo Related</h2>
+        </div>
+        <div class="post post-variant-2">
+        <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal offset-top-25 offset-md-top-0">
+            <div class="unit-left">
+            <div class="post-inner">
+                <div class="d-inline-block"><img class="post-image" src="{{ url_for('static', filename='images/index-18.jpg') }}" alt=""/>
+                </div>
+                <div class="post-caption">
+                <ul>
+                    <li><a href="politics.html"><span class="badge badge-warning">World</span></a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+            <div class="unit-body">
+            <div class="h5 font-weight-bold"><a class="post-link" href="post-default.html">Zika Virus Described in Detail</a></div>
+            <p>Learn more about symptoms and dangers of this new virus, which recently broke out in African countries and spread across the globe rapidly.</p>
+            <div class="post-meta post-meta-hidden-outer">
+                <div class="post-meta-hidden">
+                <div class="icon text-gray icon-lg material-icons-share">
+                    <ul>
+                    <li><a class="icon fa fa-facebook" href="#"></a></li>
+                    <li><a class="icon fa fa-twitter" href="#"></a></li>
+                    <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                    <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                    <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                    </ul>
+                </div>
+                </div>
+                <div class="element-groups-custom"><a class="post-meta-author" href="categories-list.html">Brian Williamson</a><a class="post-meta-time" href="politics.html">
+                    <time datetime="2020-06-06">2h ago</time></a><a class="post-meta-comment" href="post-default.html#comments">15 Comments</a></div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="divider divider-dashed"></div>
+        <div class="post post-variant-2">
+        <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal">
+            <div class="unit-left">
+            <div class="post-inner">
+                <div class="d-inline-block"><img class="post-image" src="{{ url_for('static', filename='images/index-19.jpg') }}" alt=""/>
+                </div>
+                <div class="post-caption">
+                <ul>
+                    <li><a href="politics.html"><span class="badge badge-warning">World</span></a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+            <div class="unit-body">
+            <div class="h5 font-weight-bold"><a class="post-link" href="post-default.html">Happy National Chocolate Cake Day! ‘GMA’ Viewers Share Decadent Recipes</a></div>
+            <p>GMA&quot; invited viewers to submit their chocolate cake recipes for a review, as the US celebrates the national chocolate cake day.</p>
+            <div class="post-meta post-meta-hidden-outer">
+                <div class="post-meta-hidden">
+                <div class="icon text-gray icon-lg material-icons-share">
+                    <ul>
+                    <li><a class="icon fa fa-facebook" href="#"></a></li>
+                    <li><a class="icon fa fa-twitter" href="#"></a></li>
+                    <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                    <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                    <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                    </ul>
+                </div>
+                </div>
+                <div class="element-groups-custom"><a class="post-meta-author" href="categories-list.html">Brian Williamson</a><a class="post-meta-time" href="politics.html">
+                    <time datetime="2020-06-06">2h ago</time></a><a class="post-meta-comment" href="post-default.html#comments">15 Comments</a></div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="divider divider-dashed"></div>
+        <div class="post post-variant-2">
+        <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal">
+            <div class="unit-left">
+            <div class="post-inner">
+                <div class="d-inline-block"><img class="post-image" src="{{ url_for('static', filename='images/index-20.jpg') }}" alt=""/>
+                </div>
+                <div class="post-caption">
+                <ul>
+                    <li><a href="politics.html"><span class="badge badge-warning">Sports</span></a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+            <div class="unit-body">
+            <div class="h5 font-weight-bold"><a class="post-link" href="post-default.html">Simmons shows off in College Football once more: LSU vs Georgia</a></div>
+            <p>NFL had suffered a new harsh, brutal, but yet very interesting game of football this Sunday night. Colleges clashed...</p>
+            <div class="post-meta post-meta-hidden-outer">
+                <div class="post-meta-hidden">
+                <div class="icon text-gray icon-lg material-icons-share">
+                    <ul>
+                    <li><a class="icon fa fa-facebook" href="#"></a></li>
+                    <li><a class="icon fa fa-twitter" href="#"></a></li>
+                    <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                    <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                    <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                    </ul>
+                </div>
+                </div>
+                <div class="element-groups-custom"><a class="post-meta-author" href="categories-list.html">Brian Williamson</a><a class="post-meta-time" href="politics.html">
+                    <time datetime="2020-06-06">2h ago</time></a><a class="post-meta-comment" href="post-default.html#comments">15 Comments</a></div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="divider divider-dashed"></div>
+        <div class="post post-variant-2">
+        <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal">
+            <div class="unit-left">
+            <div class="post-inner">
+                <div class="d-inline-block"><img class="post-image" src="{{ url_for('static', filename='images/index-21.jpg') }}" alt=""/>
+                </div>
+                <div class="post-caption">
+                <ul>
+                    <li><a href="politics.html"><span class="badge badge-warning">Travel</span></a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+            <div class="unit-body">
+            <div class="h5 font-weight-bold"><a class="post-link" href="post-default.html">Qatar Airways will soon launch the world's longest direct flight</a></div>
+            <p>The airline’s expansion plans include a non-stop route between Doha (Qatar) and Auckland (New Zealand) which, if it takes off, will mean a flight time of 18 hours and 34 minutes for the 9,000+ mile journey. Buckle up!</p>
+            <div class="post-meta post-meta-hidden-outer">
+                <div class="post-meta-hidden">
+                <div class="icon text-gray icon-lg material-icons-share">
+                    <ul>
+                    <li><a class="icon fa fa-facebook" href="#"></a></li>
+                    <li><a class="icon fa fa-twitter" href="#"></a></li>
+                    <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                    <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                    <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                    </ul>
+                </div>
+                </div>
+                <div class="element-groups-custom"><a class="post-meta-author" href="categories-list.html">Brian Williamson</a><a class="post-meta-time" href="politics.html">
+                    <time datetime="2020-06-06">2h ago</time></a><a class="post-meta-comment" href="post-default.html#comments">15 Comments</a></div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="divider divider-dashed"></div>
+        <div class="post post-variant-2">
+        <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal">
+            <div class="unit-left">
+            <div class="post-inner">
+                <div class="d-inline-block"><img class="post-image" src="{{ url_for('static', filename='images/index-22.jpg') }}" alt=""/>
+                </div>
+                <div class="post-caption">
+                <ul>
+                    <li><a href="politics.html"><span class="badge badge-warning">Tech</span></a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+            <div class="unit-body">
+            <div class="h5 font-weight-bold"><a class="post-link" href="post-default.html">Apple Hasn’t Experienced This for the Last 13 Years, but It’s Bracing for It Now</a></div>
+            <p>Apple is shocked by its first sales decline in 13 years, despite selling a record 74.8 million iPhones in the final three months of 2015.</p>
+            <div class="post-meta post-meta-hidden-outer">
+                <div class="post-meta-hidden">
+                <div class="icon text-gray icon-lg material-icons-share">
+                    <ul>
+                    <li><a class="icon fa fa-facebook" href="#"></a></li>
+                    <li><a class="icon fa fa-twitter" href="#"></a></li>
+                    <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                    <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                    <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                    </ul>
+                </div>
+                </div>
+                <div class="element-groups-custom"><a class="post-meta-author" href="categories-list.html">Brian Williamson</a><a class="post-meta-time" href="politics.html">
+                    <time datetime="2020-06-06">2h ago</time></a><a class="post-meta-comment" href="post-default.html#comments">15 Comments</a></div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="divider divider-dashed"></div>
+        <div class="post post-variant-2">
+        <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal">
+            <div class="unit-left">
+            <div class="post-inner">
+                <div class="d-inline-block"><img class="post-image" src="{{ url_for('static', filename='images/index-23.jpg') }}" alt=""/>
+                </div>
+                <div class="post-caption">
+                <ul>
+                    <li><a href="politics.html"><span class="badge badge-warning">Business</span></a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+            <div class="unit-body">
+            <div class="h5 font-weight-bold"><a class="post-link" href="post-default.html">Illinois budget fix: Just leave bills ignored and unpaid</a></div>
+            <p>The state of Illinois has found a workaround for a multibillion-dollar budget gap: Just don`t pay $6 billion of your bills.</p>
+            <div class="post-meta post-meta-hidden-outer">
+                <div class="post-meta-hidden">
+                <div class="icon text-gray icon-lg material-icons-share">
+                    <ul>
+                    <li><a class="icon fa fa-facebook" href="#"></a></li>
+                    <li><a class="icon fa fa-twitter" href="#"></a></li>
+                    <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                    <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                    <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                    </ul>
+                </div>
+                </div>
+                <div class="element-groups-custom"><a class="post-meta-author" href="categories-list.html">Brian Williamson</a><a class="post-meta-time" href="politics.html">
+                    <time datetime="2020-06-06">2h ago</time></a><a class="post-meta-comment" href="post-default.html#comments">15 Comments</a></div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="divider divider-dashed"></div>
+        </div>
+        <div class="divider divider-dashed"></div>
+    </div>
+    <!--THINGS RELATED TO OTHER DEVELOPERS. REFERENCES TO THEIR POSTS. -->
+    <div class="col-xl-4 offset-top-36">
+        <div class="row row-xl-50">
+        <div class="col-md-8 col-xl-12 order-sm-1 order-xl-1">
+            <div class="bg-black context-dark sidebar-inset">
+            <h3 class="heading-italic font-weight-regular">Search</h3>
+            <form class="rd-form rd-search rd-form-inline sidebar-search" action="search-results-others.html" method="GET">
+                <div class="form-wrap">
+                <label class="form-label" for="rd-search-form-input">What other devs are doing?</label>
+                <input class="form-input" id="rd-search-form-input" type="text" name="s" autocomplete="off">
+                </div>
+                <div class="form-wrap form-button">
+                <button class="btn btn-warning offset-xs-left-10 offset-xs-top-0" type="submit">Search</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        <div class="col-sm-12 order-sm-2 order-xl-4">
+            <div class="heading-divider pt-0">
+            <h3 class="heading-italic font-weight-regular">Projects from other users</h3>
+            </div>
+            <div class="row">
+            <div class="col-md-6 col-xl-12">
+                            <div class="post post-variant-1">
+                                <div class="post-inner"><img class="img-responsive post-image" src="{{ url_for('static', filename='images/sidebar-07.jpg') }}" alt=""/>
+                                <div class="post-caption">
+                                    <ul>
+                                    <li><a href="politics.html"><span class="badge badge-warning">News</span></a></li>
+                                    </ul>
+                                    <div>
+                                    <div class="h4 text-normal font-accent-2"><a href="post-with-slider.html">Bill Maher & Macfarlene: ‘Serial Anti-Catholic Bigots’ - Catholic League</a></div>
+                                                    <div class="post-meta post-meta-hidden-outer">
+                                                    <div class="post-meta-hidden">
+                                                        <div class="icon text-gray icon-lg material-icons-share">
+                                                        <ul>
+                                                            <li><a class="icon fa fa-facebook" href="#"></a></li>
+                                                            <li><a class="icon fa fa-twitter" href="#"></a></li>
+                                                            <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                                                            <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                                                            <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                                                        </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="element-groups-custom d-none d-lg-block"><a class="post-meta-author" href="categories-grid.html">Brian Williamson</a><a class="post-meta-time" href="categories-grid.html">
+                                                        <time datetime="2020-06-06">2h ago</time></a></div>
+                                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                <hr class="divider divider-dashed">
+                            <div class="post post-variant-1">
+                                <div class="post-inner"><img class="img-responsive post-image" src="{{ url_for('static', filename='images/sidebar-08.jpg') }}" alt=""/>
+                                <div class="post-caption">
+                                    <ul>
+                                    <li><a href="politics.html"><span class="badge badge-warning">News</span></a></li>
+                                    </ul>
+                                    <div>
+                                    <div class="h4 text-normal font-accent-2"><a href="post-with-audio.html">Spotify aims to raise $500M in debt</a></div>
+                                                    <div class="post-meta post-meta-hidden-outer">
+                                                    <div class="post-meta-hidden">
+                                                        <div class="icon text-gray icon-lg material-icons-share">
+                                                        <ul>
+                                                            <li><a class="icon fa fa-facebook" href="#"></a></li>
+                                                            <li><a class="icon fa fa-twitter" href="#"></a></li>
+                                                            <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                                                            <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                                                            <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                                                        </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="element-groups-custom d-none d-lg-block"><a class="post-meta-author" href="categories-grid.html">Brian Williamson</a><a class="post-meta-time" href="categories-grid.html">
+                                                        <time datetime="2020-06-06">2h ago</time></a></div>
+                                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                <hr class="divider divider-dashed d-md-none d-xl-block">
+            </div>
+            <div class="col-md-6 col-xl-12 offset-lg-top-30">
+                            <div class="post post-variant-1">
+                                <div class="post-inner"><img class="img-responsive post-image" src="{{ url_for('static', filename='images/sidebar-09.jpg') }}" alt=""/>
+                                <div class="post-caption">
+                                    <ul>
+                                    <li><a href="politics.html"><span class="badge badge-warning">News</span></a></li>
+                                    </ul>
+                                    <div>
+                                    <div class="h4 text-normal font-accent-2"><a href="post-with-quote.html">ICC Judges Start Investigations of Russian Aggressive War in Georgia in 2008</a></div>
+                                                    <div class="post-meta post-meta-hidden-outer">
+                                                    <div class="post-meta-hidden">
+                                                        <div class="icon text-gray icon-lg material-icons-share">
+                                                        <ul>
+                                                            <li><a class="icon fa fa-facebook" href="#"></a></li>
+                                                            <li><a class="icon fa fa-twitter" href="#"></a></li>
+                                                            <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                                                            <li><a class="icon fa fa-linkedin" href="#"></a></li>
+                                                            <li><a class="icon fa fa-pinterest" href="#"></a></li>
+                                                        </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="element-groups-custom d-none d-lg-block"><a class="post-meta-author" href="categories-grid.html">Brian Williamson</a><a class="post-meta-time" href="categories-grid.html">
+                                                        <time datetime="2020-06-06">2h ago</time></a></div>
+                                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-12 order-sm-5 order-xl-5">
+            <div class="heading-divider p-0">
+            <h3 class="heading-italic font-weight-regular">Recent activity</h3>
+            </div>
+            <div class="row offset-top-0 justify-content-center">
+            <div class="col-md-8 col-xl-12 offset-xl-0"><span class="small font-accent font-italic"><a href="categories-grid.html">Brian Williamson</a> on</span>
+                <h5><a class="link-black" href="post-default.html">Bradley Cooper’s "Twin" Causes Madness At Sundance Film Festival Opening</a></h5>
+                <hr class="divider divider-dashed"><span class="small font-accent font-italic"><a href="categories-grid.html">Brian Williamson</a> on</span>
+                <h5><a class="link-black" href="post-with-audio.html">3 Ways To Conquer Your Winter Laziness</a></h5>
+                <hr class="divider divider-dashed"><span class="small font-accent font-italic"><a href="categories-grid.html">Brian Williamson</a> on</span>
+                <h5><a class="link-black" href="post-with-video.html">Greeks were warned - stop refugees wave, or we will kick you out</a></h5>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- END THINGS TO OTHER PROGRAMMERS -->
+    </div>
+</div>
+</section>
