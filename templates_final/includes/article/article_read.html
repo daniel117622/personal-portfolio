@@ -1,0 +1,178 @@
+<section class="section section-md bg-default">
+        <div class="container container-wide">
+          <div class="row text-left row-narrow-60 row-30">
+            <div class="col-xl-8">
+              <div class="row flex-xl-row-reverse row-20">
+                <div class="col-xl-11">
+                  <div class="post post-default post-variant-3">
+                    
+                    <!-- DYNAMIC CATEGORY -->
+                    <div class="text-left">
+                      <a href="#"><span class="badge badge-warning">{{ article.category.name }}</span></a>
+                    </div>
+                    
+                    <div class="offset-top-12">
+                      <!-- DYNAMIC TITLE -->
+                      <div class="h1 text-black">{{ article.title }}</div>
+                      
+                      <!-- META INFO -->
+                      <div class="post-meta element-groups-custom offset-top-12">
+                        <a class="post-meta-author" href="#">Daniel Alexandro de la Cruz</a>
+                        <a class="post-meta-time" href="#">
+                          <time datetime="2026-09-22">Today</time>
+                        </a>
+                        <a class="post-meta-comment" href="#comments">3 Comments</a>
+                      </div>
+                    </div>
+                    
+                    <!-- DYNAMIC ARTICLE CONTENT LOOP -->
+                    <div class="article-content offset-top-20">
+                      {% for block in article.text_flow %}
+                        
+                        {% if block.__class__.__name__ == 'TextBlock' %}
+                          <!-- Render HTML text content safely -->
+                          {{ block.text_content | safe }}
+                        
+                        {% elif block.__class__.__name__ == 'ImageBlock' %}
+                          <!-- Render image and its description -->
+                          <div class="text-center offset-top-20 offset-bottom-20">
+                            <img class="img-responsive" src="{{ block.img }}" alt="{{ block.description }}"/>
+                            <p class="font-italic offset-top-12">{{ block.description }}</p>
+                          </div>
+                        {% endif %}
+                        
+                      {% endfor %}
+                    </div>
+
+                    <!-- DYNAMIC TAGS -->
+                    <div class="post-meta offset-top-20">
+                      <span class="post-meta-tags">Tagged in : 
+                        <span><a href="#">{{ article.category.name }}</a></span>
+                      </span>
+                    </div>
+
+                  </div>
+
+                <!-- SOCIAL STICKY SIDEBAR -->
+                <div class="col-xl-1">
+                  <ul class="list-inline-0 stuck-lg">
+                    <li class="reveal-lg-block offset-lg-top-5"><a class="icon icon-circle fa-facebook icon-black" href="#"></a></li>
+                    <li class="reveal-lg-block offset-lg-top-5"><a class="icon icon-circle fa-twitter icon-black" href="#"></a></li>
+                    <li class="reveal-lg-block offset-lg-top-5"><a class="icon icon-circle fa-instagram icon-black" href="#"></a></li>
+                    <li class="reveal-lg-block offset-lg-top-5"><a class="icon icon-circle fa-youtube icon-black" href="#"></a></li>
+                    <li class="reveal-lg-block offset-lg-top-5"><a class="icon icon-circle fa-feed icon-black" href="#"></a></li>
+                  </ul>
+                </div>
+              </div>
+              
+              <hr class="divider post-divider">
+              
+              <!-- COMMENTS SECTION -->
+              <div class="heading-divider" id="comments">
+                <h3 class="heading-italic font-weight-regular">3 Responses</h3>
+              </div>
+              
+              <div class="comment text-md-left">
+                <div class="unit-comment unit flex-md-row flex-lg-row flex-xl-row flex-xxl-row">
+                  <div class="unit-left"><img class="max-width-none" src="{{ url_for('static', filename='images/comment-01.jpg') }}" alt=""/></div>
+                  <div class="unit-body">
+                    <div class="row justify-content-sm-between text-sm-left">
+                      <div class="col-sm-8">
+                        <ul class="list-inline-md font-accent small font-italic">
+                          <li>by <a href="#">Daniel Alexandro de la Cruz</a></li>
+                          <li><span class="icon-time text-primary">2h ago</span></li>
+                        </ul>
+                      </div>
+                      <div class="col-sm-2 text-right"><a class="icon-reply" href="#reply"></a></div>
+                    </div>
+                    <p>I cannot agree more, fantastic read about cloud scaling!</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Leave A Reply Form -->
+              <div class="heading-divider" id="reply">
+                <h3 class="heading-italic font-weight-regular">Leave a Reply</h3>
+              </div>
+              <p class="font-weight-regular font-italic">Your email address will not be published. Required fields are marked<span class="text-primary">*</span></p>
+              <form class="rd-mailform rd-mailform-gray-light-skin comment-form" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{ url_for('static', filename='bat/rd-mailform.php') }}">
+                <div class="form-wrap">
+                  <label class="form-label" for="contact-name">Your name *</label>
+                  <input class="form-input" id="contact-name" type="text" name="name" data-constraints="@Required">
+                </div>
+                <div class="form-wrap">
+                  <label class="form-label" for="contact-email">E-Mail *</label>
+                  <input class="form-input" id="contact-email" type="email" name="email" data-constraints="@Required @Email">
+                </div>
+                <div class="form-wrap">
+                  <label class="form-label" for="message">Comment *</label>
+                  <textarea class="form-input" id="message" name="message" data-constraints="@Required"></textarea>
+                </div>
+                <div class="form-button form-wrap">
+                  <button class="btn btn-warning">Submit Comment</button>
+                </div>
+              </form>
+              <div class="rd-mailform-validate"></div>
+            </div>
+            
+            <!-- RIGHT SIDEBAR (Search, Socials, Latest News) -->
+            <div class="col-xl-4 offset-top-45 offset-lg-top-0">
+              <div class="row row-xl-60 justify-content-center">
+                
+                <div class="col-md-8 col-xl-12 offset-xl-0 order-sm-1 order-xl-1">
+                  <div class="bg-black context-dark sidebar-inset">
+                    <h3 class="heading-italic font-weight-regular">Search</h3>
+                    <form class="rd-form rd-search rd-form-inline sidebar-search" action="search-results.html" method="GET">
+                      <div class="form-wrap">
+                        <label class="form-label" for="rd-search-form-input">I'm looking for...</label>
+                        <input class="form-input" id="rd-search-form-input" type="text" name="s" autocomplete="off">
+                      </div>
+                      <div class="form-wrap form-button">
+                        <button class="btn btn-warning offset-xs-left-10 offset-xs-top-0" type="submit">Search</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                
+                <div class="col-md-8 col-xl-12 offset-xl-0 order-sm-7 order-xl-2 text-center text-xl-left">
+                  <div class="bg-gray-light sidebar-inset">
+                    <h3 class="heading-italic font-weight-regular">Follow us</h3>
+                    <p>Read our latest news on any of these social networks!</p>
+                    <ul class="list-inline-0">
+                      <li><a class="icon icon-circle fa-facebook icon-black" href="#"></a></li>
+                      <li><a class="icon icon-circle fa-twitter icon-black" href="#"></a></li>
+                      <li><a class="icon icon-circle fa-instagram icon-black" href="#"></a></li>
+                      <li><a class="icon icon-circle fa-youtube icon-black" href="#"></a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-sm-12 order-sm-3 order-xl-3 offset-top-45">
+                  <div class="heading-divider pt-0">
+                    <h3 class="heading-italic font-weight-regular">Latest news</h3>
+                  </div>
+                  <div class="row offset-top-30 offset-md-top-60">
+                    <div class="col-md-6 col-xl-12">
+                      <div class="post post-variant-2">
+                        <div class="unit flex-column flex-sm-row">
+                          <div class="unit-left">
+                            <div class="post-inner">
+                              <div class="d-inline-block"><img class="post-image" src="{{ url_for('static', filename='images/sidebar-01.jpg') }}" alt=""/></div>
+                            </div>
+                          </div>
+                          <div class="unit-body">
+                            <div class="h5 font-italic font-weight-bold"><a class="post-link" href="#">Bradley Cooper’s &quot;Twin&quot; Causes Madness At Sundance</a></div>
+                            <div class="post-meta"><a class="post-meta-time" href="#"><time datetime="2020-06-06">Jan. 20, 2020</time></a></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </section>

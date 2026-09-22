@@ -2,7 +2,7 @@ import os
 from typing import List
 from flask import Flask, render_template, abort, request, has_request_context
 from jinja2 import TemplateNotFound
-from dtos.articles.articles import ArticleSummary, get_articles
+from dtos.articles.articles import ArticleSummary, get_articles_summary
 from dtos.homepage.socials import SocialActivity, get_social_activity
 from logger import get_logger
 
@@ -11,6 +11,9 @@ from dtos.common.nav import get_main_menu
 from dtos.common.footer import get_footer_menu
 from dtos.homepage.homepage import get_main_topics, HeaderTopics
 from dtos.devlogs.devlogs import DevBlogSummary, get_devlogs
+from dtos.articles.full_article import get_article_by_id
+
+from repository import repos
 
 app = Flask(__name__)
 
@@ -48,10 +51,12 @@ def handle_exception(error):
 # NORMAL PATHS -> RENDERIZA LA PLANTILLA TRANSFORMADA A JINJA (templates_final)
 @app.route("/")
 def index():
-    header_data: HeaderTopics = get_main_topics()
-    devlogs  : List[DevBlogSummary] = get_devlogs()
-    articles : List[ArticleSummary] = get_articles()
-    socials  : SocialActivity       = get_social_activity()
+    # --- 4. REPOSITORY USAGE ---
+    header_data: HeaderTopics = repos.homepage.get_main_topics()
+    devlogs    : List[DevBlogSummary] = repos.devlogs.get_devlogs()
+    articles   : List[ArticleSummary] = repos.articles.get_articles_summary()
+    socials    : SocialActivity       = repos.homepage.get_social_activity()
+    
     return render_template(
         "index.html",
         main_topic=header_data.main_topic,
@@ -61,6 +66,17 @@ def index():
         socials=socials
     )
 
+
+@app.route("/article")
+def article_by_id():
+    article_id = request.args.get("id", type=int)
+    # --- 5. REPOSITORY USAGE ---
+    article_content = repos.articles.get_article_by_id(article_id)
+    
+    return render_template(
+        "article_read.html",
+        article=article_content
+    )
 
 @app.route("/<path:page_name>")
 def catch_all(page_name):
