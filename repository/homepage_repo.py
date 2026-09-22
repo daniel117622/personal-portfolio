@@ -35,7 +35,7 @@ class MockHomepageRepository:
             date       = "August 14, 2026",
             title      = "AI-Powered Web Development: Not every website needs to look the same",
             share_link = "#",
-            href       = "#",
+            href       = "/article?id=1",
             img        = "/static/images/homepage/main_post.jpg"
         )
 

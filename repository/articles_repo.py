@@ -213,6 +213,7 @@ class MockArticlesRepository:
                 author="Author",
                 time_read="7 min read",
                 comments_count=42,
+                href="/article?id=1"
             ),
             ArticleSummary(
                 id=1,
@@ -232,5 +233,6 @@ class MockArticlesRepository:
                 author="Author",
                 time_read="10 min read",
                 comments_count=31,
+                href="/article?id=1"
             ),
         ]

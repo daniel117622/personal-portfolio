@@ -1,6 +1,6 @@
 import traceback
 
-from flask import render_template, request
+from flask import jsonify, render_template, request
 from jinja2 import TemplateNotFound
 
 
