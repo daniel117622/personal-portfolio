@@ -203,7 +203,7 @@ class MockArticlesRepository:
                             )
 
     @lru_cache(maxsize=1)
-    def get_articles_summary() ->  List[ArticleSummary]:
+    def get_articles_summary(self) ->  List[ArticleSummary]:
         return [
             ArticleSummary(
                 id=0,

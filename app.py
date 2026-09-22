@@ -1,17 +1,17 @@
 import os
 from typing import List
-from flask import Flask, render_template, abort, request, has_request_context
+from flask import Flask, render_template, abort, request
 from jinja2 import TemplateNotFound
-from dtos.articles.articles import ArticleSummary, get_articles_summary
-from dtos.homepage.socials import SocialActivity, get_social_activity
 from logger import get_logger
 
 from loader import ABTestingLoader
-from dtos.common.nav import get_main_menu
-from dtos.common.footer import get_footer_menu
-from dtos.homepage.homepage import get_main_topics, HeaderTopics
-from dtos.devlogs.devlogs import DevBlogSummary, get_devlogs
-from dtos.articles.full_article import get_article_by_id
+# 1. THE SINGLE SOURCE OF DATA TRUTH
+from repository import repos
+
+# 2. CLEAN DOMAIN-LEVEL DTO IMPORTS (For type hinting only)
+from dtos.homepage import HeaderTopics, SocialActivity 
+from dtos.devlogs import DevBlogSummary
+from dtos.articles import ArticleSummary
 
 from repository import repos
 
@@ -20,8 +20,10 @@ app = Flask(__name__)
 
 @app.context_processor
 def inject_global_variables():
-    return dict(nav_menu=get_main_menu(), footer_menu=get_footer_menu())
-
+    return dict(
+        nav_menu=repos.common.get_main_menu(),
+        footer_menu=repos.common.get_footer()
+    )
 
 logger = get_logger()
 
@@ -52,7 +54,7 @@ def handle_exception(error):
 @app.route("/")
 def index():
     # --- 4. REPOSITORY USAGE ---
-    header_data: HeaderTopics = repos.homepage.get_main_topics()
+    header_data: List[HeaderTopics]   = repos.homepage.get_main_topics()
     devlogs    : List[DevBlogSummary] = repos.devlogs.get_devlogs()
     articles   : List[ArticleSummary] = repos.articles.get_articles_summary()
     socials    : SocialActivity       = repos.homepage.get_social_activity()

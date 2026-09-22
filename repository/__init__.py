@@ -21,3 +21,14 @@ USE_MOCK = True
 
 # Instantiate a global registry you can import anywhere
 repos = AppRepositories(use_mock=USE_MOCK)
+
+__all__ = [
+    "ArticlesRepository",
+    "MockArticlesRepository",
+    "MockCommonRepository",
+    "CommonRepository",
+    "MockHomepageRepository",
+    "HomepageRepository",
+    "MockDevlogsRepository",
+    "DevlogsRepository",
+]

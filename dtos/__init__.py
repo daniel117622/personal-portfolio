@@ -15,3 +15,7 @@ class ValidCategories(_CallableStringEnum):
     RESEARCH          = "Research"
     DEVLOG            = "Devlog"
     ARTICLES          = "Articles"
+
+__all__ = [
+    "Enum",
+]

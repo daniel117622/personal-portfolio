@@ -1,10 +1,10 @@
-from typing import Protocol, Optional
+from typing import List, Protocol, Optional
 from dtos.homepage.homepage import HeaderTopics , _topic 
 from dtos.homepage.socials import SocialActivity , RecentActivity , FeaturedProject
 from dtos import ValidCategories
 
 class HomepageRepositoryProtocol(Protocol):
-    def get_main_topics(self) -> Optional[HeaderTopics]:
+    def get_main_topics(self) -> Optional[List[HeaderTopics]]:
         ...
         
     def get_social_activity(self) -> Optional[SocialActivity]:
@@ -14,7 +14,7 @@ class HomepageRepository:
     def __init__(self, data_access=None):
         self.data_access = data_access
 
-    def get_main_topics(self) -> Optional[HeaderTopics]:
+    def get_main_topics(self) -> Optional[List[HeaderTopics]]:
         if self.data_access is None:
             return None
         # Future real implementation here
@@ -28,7 +28,7 @@ class HomepageRepository:
 
 # 3. The Mock Implementation
 class MockHomepageRepository:
-    def get_main_topics(self) -> Optional[HeaderTopics]:
+    def get_main_topics(self) -> Optional[List[HeaderTopics]]:
         _main_topic = _topic(
             id=0,
             category   = ValidCategories.DEVLOG(),
