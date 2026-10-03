@@ -1,6 +1,5 @@
 templates_original/
 .envdb_volume/*
-sync_db.py
 .env
 __pycache__/
 *.pyc
