@@ -206,7 +206,7 @@ class MockArticlesRepository:
     def get_articles_summary(self) ->  List[ArticleSummary]:
         return [
             ArticleSummary(
-                id=0,
+                id=1,
                 category="Software Engineering",
                 title="Scalable Chatbots: Composite Patterns & Automata",
                 summary="Explore how combining the Composite design pattern with Pushdown Automata can streamline complex, task-oriented AI chatbot interactions.",
@@ -216,7 +216,7 @@ class MockArticlesRepository:
                 href="/article?id=1"
             ),
             ArticleSummary(
-                id=1,
+                id=2,
                 category="Cloud Computing",
                 title="Breaking the CPU Bottleneck with Cloud Functions",
                 summary="Learn how to offload heavy processing and improve API performance by leveraging distributed serverless architecture.",
@@ -226,13 +226,13 @@ class MockArticlesRepository:
                 href="/article?id=1"
             ),
             ArticleSummary(
-                id=2,
+                id=3,
                 category="Software Architecture",
                 title="Mastering Simplicity: Reducing Code Complexity",
                 summary="A practical guide featuring real-world examples on applying core software principles to keep your codebase clean and maintainable.",
                 author="Author",
                 time_read="10 min read",
                 comments_count=31,
-                href="/article?id=1"
+                href="/article?id=3"
             ),
         ]
