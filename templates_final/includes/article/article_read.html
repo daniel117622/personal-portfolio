@@ -25,24 +25,24 @@
                       </div>
                     </div>
                     
-                    <!-- DYNAMIC ARTICLE CONTENT LOOP -->
-                    <div class="article-content offset-top-20">
-                      {% for block in article.text_flow %}
-                        
-                        {% if block.__class__.__name__ == 'TextBlock' %}
-                          <!-- Render HTML text content safely -->
-                          {{ block.text_content | safe }}
-                        
-                        {% elif block.__class__.__name__ == 'ImageBlock' %}
-                          <!-- Render image and its description -->
-                          <div class="text-center offset-top-20 offset-bottom-20">
-                            <img class="img-responsive" src="{{ block.img }}" alt="{{ block.description }}"/>
-                            <p class="font-italic offset-top-12">{{ block.description }}</p>
-                          </div>
-                        {% endif %}
-                        
-                      {% endfor %}
-                    </div>
+<!-- DYNAMIC ARTICLE CONTENT LOOP -->
+<div class="article-content offset-top-20">
+  {% for block in article.text_flow %}
+    
+    {% if block.text_content is defined %}
+      <!-- Render HTML text content safely -->
+      {{ block.text_content | safe }}
+    
+    {% elif block.img is defined %}
+      <!-- Render image and its description -->
+      <div class="text-center offset-top-20 offset-bottom-20">
+        <img class="img-responsive" src="{{ block.img }}" alt="{{ block.description }}"/>
+        <p class="font-italic offset-top-12">{{ block.description }}</p>
+      </div>
+    {% endif %}
+    
+  {% endfor %}
+</div>
 
 
               <hr class="divider post-divider">

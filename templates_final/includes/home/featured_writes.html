@@ -83,8 +83,11 @@
             <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal {% if loop.first %}offset-top-25 offset-md-top-0{% endif %}">
                 <div class="unit-left">
                     <div class="post-inner">
-                        <div class="d-inline-block">
-                            <img class="post-image" src="{{ url_for('static', filename='images/homepage/octocat.jpg') }}" alt="{{ article.title }}"/>
+                        <div class="d-inline-block" style="width: 424px; height: 394px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                            <img class="post-image" 
+                                src="{{ url_for('static', filename=article.cover_img) }}" 
+                                alt="{{ article.title }}"
+                                style="min-width: 100%; min-height: 100%; width: auto; height: auto; max-width: none;" />
                         </div>
                         <div class="post-caption">
                             <ul>

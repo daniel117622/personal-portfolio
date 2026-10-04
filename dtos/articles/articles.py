@@ -10,4 +10,6 @@ class ArticleSummary:
     time_read   : str
     comments_count: int
     href: str = "#"
+    cover_img: str = "images/homepage/octocat.jpg"
+
 

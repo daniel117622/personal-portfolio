@@ -20,5 +20,7 @@ class ArticleReadable:
     title: str
     category : ValidCategories
     text_flow: List[ImageBlock | TextBlock]
+    cover_img: str = "images/homepage/octocat.jpg"
+
 
 

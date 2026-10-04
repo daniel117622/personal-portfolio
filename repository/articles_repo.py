@@ -15,21 +15,55 @@ class ArticlesRepository:
     def __init__(self, data_access=None):
         self.data_access = data_access
 
-    def get_articles(self) -> Optional[List[ArticleReadable]]:
-        if self.data_access is None: 
-            return None
-        
-        pass
+    def get_article_by_id(self, article_id: int) -> Optional[ArticleReadable]:
+            if self.data_access is None: 
+                return None
 
-    def get_article_by_id(self, article_id: int) -> Optional[ArticleSummary]:
-        if self.data_access is None: 
-            return None
-       
-        
+            collection = self.data_access.collection("articles")
+            if collection is None:
+                return None
+
+            projection = {
+                "_id"      : 0,
+                "id"       : 1,
+                "title"    : 1,
+                "category" : 1,
+                "text_flow": 1,
+                "cover_img": 1
+            }
+            doc = collection.find_one({"id": article_id}, projection)
+            
+            if not doc:
+                return None
+                
+            return ArticleReadable(**doc)
 
     def get_articles_summary(self) -> Optional[List[ArticleSummary]]:
         if self.data_access is None: 
             return None
+            
+        collection = self.data_access.collection("articles")
+        if collection is None:
+            return None
+            
+        # Projection: Only retrieve the fields mapped in ArticleSummary
+        # Exclude the internal '_id' and any heavy 'content' arrays
+        projection = {
+            "_id"           : 0,
+            "id"            : 1,
+            "category"      : 1,
+            "title"         : 1,
+            "summary"       : 1,
+            "author"        : 1,
+            "time_read"     : 1,
+            "comments_count": 1,
+            "href"          : 1,
+            "cover_img"     : 1
+        }
+        
+        cursor = collection.find({}, projection)
+        
+        return [ArticleSummary(**doc) for doc in cursor]
        
 class MockArticlesRepository:
     @lru_cache(maxsize=1)

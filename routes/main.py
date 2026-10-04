@@ -3,6 +3,7 @@ from typing import List
 from flask import Blueprint, render_template, abort, request
 from jinja2 import TemplateNotFound
 
+from dtos.articles.full_article import ArticleReadable
 from repository import repos
 from dtos.homepage import HeaderTopics, SocialActivity
 from dtos.devlogs import DevBlogSummary
@@ -10,6 +11,8 @@ from dtos.articles import ArticleSummary
 
 main_bp = Blueprint("main", __name__)
 
+from logger import get_logger
+logger = get_logger(__name__)
 
 @main_bp.route("/")
 def index():
@@ -31,7 +34,10 @@ def index():
 @main_bp.route("/article")
 def article_by_id():
     article_id = request.args.get("id", type=int)
-    article_content = repos.articles.get_article_by_id(article_id)
+    article_content : ArticleReadable = repos.articles.get_article_by_id(article_id)
+
+    text_flow = article_content.text_flow 
+    logger.info(f"Text blocks quantity : {len(text_flow)}")
 
     return render_template("article_read.html", article=article_content)
 

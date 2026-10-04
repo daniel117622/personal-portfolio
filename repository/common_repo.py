@@ -19,10 +19,38 @@ class CommonRepository:
     def get_main_menu(self) -> Optional[List[MenuItem]]:
         if self.data_access is None:
             return None 
+            
+        collection = self.data_access.collection("common")
+        if collection is None:
+            return None
+            
+        # Filter by type and exclude the MongoDB _id
+        doc = collection.find_one({"type": "main_menu"}, {"_id": 0})
+        if not doc or "data" not in doc:
+            return None
+            
+        return [MenuItem(**item) for item in doc.get("data", [])]
 
     def get_footer(self) -> Optional[FooterDTO]:
         if self.data_access is None:
             return None 
+            
+        collection = self.data_access.collection("common")
+        if collection is None:
+            return None
+            
+        # Filter by type and exclude the MongoDB _id
+        doc = collection.find_one({"type": "footer"}, {"_id": 0})
+        if not doc or "data" not in doc:
+            return None
+            
+        data = doc.get("data", {})
+        
+        return FooterDTO(
+            tags=[TagsLinks(**t) for t in data.get("tags", [])],
+            categories=[Categories(**c) for c in data.get("categories", [])],
+            information=[InfoLinks(**i) for i in data.get("information", [])]
+        )
 
 
 class MockCommonRepository:

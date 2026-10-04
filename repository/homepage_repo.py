@@ -3,8 +3,11 @@ from dtos.homepage.homepage import HeaderTopics , _topic
 from dtos.homepage.socials import SocialActivity , RecentActivity , FeaturedProject
 from dtos import ValidCategories
 
+from logger import get_logger
+logger = get_logger(__name__)
+
 class HomepageRepositoryProtocol(Protocol):
-    def get_main_topics(self) -> Optional[List[HeaderTopics]]:
+    def get_main_topics(self) -> Optional[HeaderTopics]:
         ...
         
     def get_social_activity(self) -> Optional[SocialActivity]:
@@ -13,19 +16,62 @@ class HomepageRepositoryProtocol(Protocol):
 class HomepageRepository:
     def __init__(self, data_access=None):
         self.data_access = data_access
+        if self.data_access is None:
+            logger.warning("HomepageRepository initialized without data_access. Operations will return None.")
+        else:
+            logger.info("HomepageRepository initialized with data_access.")
 
     def get_main_topics(self) -> Optional[List[HeaderTopics]]:
+        logger.debug("Attempting to fetch main topics from 'homepage' collection.")
+        
         if self.data_access is None:
+            logger.error("Cannot fetch main_topics: data_access is not configured.")
             return None
-        # Future real implementation here
-        pass
+            
+        collection = self.data_access.collection("homepage")
+        if collection is None:
+            logger.error("Failed to retrieve 'homepage' collection from data_access.")
+            return None
+            
+        # Filter by type to get the main_topics document
+        doc = collection.find_one({"type": "main_topics"}, {"_id": 0})
+        if not doc or "data" not in doc:
+            logger.warning("Document 'main_topics' not found in collection or missing 'data' field.")
+            return None
+            
+        data = doc.get("data", {})
+        main_topic_data = data.get("main_topic", [])
+        topics_data     = data.get("topics", [])
+        
+        logger.debug(f"Retrieved main topic and {len(topics_data)} sub-topics.")
+        
+        main_topic = _topic(**main_topic_data)
+        topics = [_topic(**t) for t in topics_data]
+        
+        logger.info("Successfully fetched and mapped HeaderTopics.")
+        # Return the object directly, removing the list wrapper
+        return HeaderTopics(main_topic=main_topic, topics=topics)
 
     def get_social_activity(self) -> Optional[SocialActivity]:
         if self.data_access is None:
             return None
-        # Future real implementation here
-        pass
-
+            
+        collection = self.data_access.collection("homepage")
+        if collection is None:
+            return None
+            
+        # Filter by type to get the social_activity document[cite: 2]
+        doc = collection.find_one({"type": "social_activity"}, {"_id": 0})
+        if not doc or "data" not in doc:
+            return None
+            
+        data = doc.get("data", {})
+        
+        # Instantiate sub-DTOs for nested arrays[cite: 2]
+        return SocialActivity(
+            code_activity=[RecentActivity(**act) for act in data.get("code_activity", [])],
+            featured_projects=[FeaturedProject(**proj) for proj in data.get("featured_projects", [])]
+        )
 # 3. The Mock Implementation
 class MockHomepageRepository:
     def get_main_topics(self) -> Optional[List[HeaderTopics]]:

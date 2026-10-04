@@ -17,7 +17,15 @@ class DevlogsRepository:
     def get_devlogs(self) -> Optional[List[DevBlogSummary]]:
         if self.data_access is None: 
             return None
-        pass
+            
+        # Matches the 'devlog' collection in your MongoDB compass structure
+        collection = self.data_access.collection("devlog")
+        if collection is None:
+            return None
+            
+        # Exclude MongoDB _id and parse into DTOs
+        cursor = collection.find({}, {"_id": 0})
+        return [DevBlogSummary(**doc) for doc in cursor]
 
 # 3. The Mock Implementation
 class MockDevlogsRepository:
