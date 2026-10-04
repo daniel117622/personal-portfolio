@@ -15,7 +15,7 @@ services:
   mongo_db:
     image: mongo:7.0
     container_name: mongo_db
-    command: mongod --noauth
+    command: mongod --auth
     ports:
       - "27017:27017"
     volumes:
