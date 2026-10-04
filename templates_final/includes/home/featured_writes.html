@@ -12,12 +12,12 @@
             <div class="unit flex-column flex-sm-row text-sm-left unit-sm-horizontal unit-md-horizontal unit-lg-horizontal {% if loop.first %}offset-top-25 offset-md-top-0{% endif %}">
                 <div class="unit-left">
                     <div class="post-inner">
-                        <div class="d-inline-block" style="width: 424px; height: 394px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                            <img class="post-image" 
-                                src="{{ url_for('static', filename=article.cover_img) }}" 
-                                alt="{{ article.title }}"
-                                style="min-width: 100%; min-height: 100%; width: auto; height: auto; max-width: none;" />
-                        </div>
+<div class="d-inline-block" style="width: 424px; height: 394px; overflow: hidden;">
+    <img class="post-image" 
+        src="{{ url_for('static', filename=article.cover_img) }}" 
+        alt="{{ article.title }}"
+        style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
+</div>
                         <div class="post-caption">
                             <ul>
                                 <li><a href="#"><span class="badge badge-warning">{{ article.category }}</span></a></li>
