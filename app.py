@@ -7,6 +7,8 @@ from context import inject_global_variables
 from errors import register_error_handlers
 from routes import register_blueprints
 
+from realtime.bus import bus
+
 logger = get_logger()
 
 
@@ -23,6 +25,9 @@ def create_app() -> Flask:
     register_error_handlers(app, logger)
     register_blueprints(app)
 
+    # Hook the realtime handlers (SOCKET.IO)
+    bus.init_app(app)
+
     return app
 
 
@@ -30,4 +35,4 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000, host="0.0.0.0")
+    bus.socketio.run(app, debug=True, port=8000, host="0.0.0.0")

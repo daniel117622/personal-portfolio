@@ -1,0 +1,343 @@
+<section class="section section-md bg-default">
+  <div class="container container-wide">
+
+    <!-- Error-path styling notes are done via inline styles only -->
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+
+        <!-- Header / month navigation -->
+        <div
+          class="d-flex justify-content-between align-items-center mb-4"
+          style="gap: 1rem;"
+        >
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            id="calPrevBtn"
+          >
+            &laquo; Anterior
+          </button>
+
+          <h3 class="mb-0 text-center" id="calMonthLabel"
+              style="min-width: 220px;">
+            &mdash;
+          </h3>
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="calNextBtn"
+          >
+            Siguiente &raquo;
+          </button>
+        </div>
+
+        <!-- Status legend -->
+        <div class="d-flex flex-wrap mb-3" style="gap: 1rem;">
+          <span class="badge bg-success">ACTIVE</span>
+          <span class="badge bg-warning text-dark">DECLINED</span>
+          <span class="badge bg-secondary">CANCELED</span>
+        </div>
+
+        <!-- Calendar grid host -->
+        <div class="table-responsive">
+          <table class="table table-bordered mb-0 align-top">
+            <thead class="table-light">
+              <tr class="text-center">
+                <th style="width: 14.28%;">Dom</th>
+                <th style="width: 14.28%;">Lun</th>
+                <th style="width: 14.28%;">Mar</th>
+                <th style="width: 14.28%;">Mié</th>
+                <th style="width: 14.28%;">Jue</th>
+                <th style="width: 14.28%;">Vie</th>
+                <th style="width: 14.28%;">Sáb</th>
+              </tr>
+            </thead>
+            <tbody id="calBody">
+              <!-- Rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty-state fallback -->
+        <p
+          class="text-muted text-center mt-3 d-none"
+          id="calEmptyState"
+        >
+          No hay reservaciones para este mes.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script id="calEventsData" type="application/json">
+  {{ events | tojson | safe }}
+</script>
+
+<script id="initial-render">
+  (function () {
+    "use strict";
+
+    // ---- Parse incoming data (sentinel-based: bail out on bad input) ----
+    function readEvents() {
+      var node = document.getElementById("calEventsData");
+      if (!node) return []; // sentinel: no data node -> empty calendar
+
+      try {
+        var parsed = JSON.parse(node.textContent || "[]");
+        if (!Array.isArray(parsed)) return []; // sentinel on wrong shape
+        return parsed;
+      } catch (err) {
+        // Swallow parse error, degrade gracefully.
+        return [];
+      }
+    }
+
+    var MONTH_NAMES = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+    ];
+
+    var STATUS_CLASS = {
+      ACTIVE: "bg-success",
+      DECLINED: "bg-warning text-dark",
+      CANCELED: "bg-secondary",
+    };
+
+    var events = readEvents();
+
+    // Map events by "YYYY-M-D" for O(1) day lookups.
+    var eventsByDay = buildIndex(events);
+
+    // Track the currently displayed month.
+    var cursor = initialCursor(events);
+
+    var bodyEl = document.getElementById("calBody");
+    var labelEl = document.getElementById("calMonthLabel");
+    var emptyEl = document.getElementById("calEmptyState");
+    var prevBtn = document.getElementById("calPrevBtn");
+    var nextBtn = document.getElementById("calNextBtn");
+
+    // Guard clause: if the host markup is missing, do nothing.
+    if (!bodyEl || !labelEl) return;
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function () {
+        cursor.setMonth(cursor.getMonth() - 1);
+        render();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function () {
+        cursor.setMonth(cursor.getMonth() + 1);
+        render();
+      });
+    }
+
+    render();
+
+    // ---------------------------------------------------------------
+    // Helpers
+    // ---------------------------------------------------------------
+
+    function dayKey(y, m, d) {
+      return y + "-" + m + "-" + d;
+    }
+
+    function buildIndex(list) {
+      var idx = {};
+      for (var i = 0; i < list.length; i++) {
+        var ev = list[i];
+        var start = new Date(ev.start);
+        if (isNaN(start.getTime())) continue; // guard: skip bad dates
+
+        var key = dayKey(
+          start.getFullYear(),
+          start.getMonth(),
+          start.getDate()
+        );
+        if (!idx[key]) idx[key] = [];
+        idx[key].push(ev);
+      }
+      return idx;
+    }
+
+    function initialCursor(list) {
+      // Prefer the earliest event month; else fall back to today.
+      if (!list.length) return new Date();
+
+      var earliest = null;
+      for (var i = 0; i < list.length; i++) {
+        var d = new Date(list[i].start);
+        if (isNaN(d.getTime())) continue;
+        if (earliest === null || d < earliest) earliest = d;
+      }
+      if (earliest === null) return new Date();
+      return new Date(earliest.getFullYear(), earliest.getMonth(), 1);
+    }
+
+    function hhmm(iso) {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return "--:--"; // sentinel for bad time
+      var h = String(d.getHours()).padStart(2, "0");
+      var m = String(d.getMinutes()).padStart(2, "0");
+      return h + ":" + m;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function eventPill(ev) {
+      var cls = STATUS_CLASS[ev.status] || "bg-secondary";
+      var label =
+        hhmm(ev.start) + " " + escapeHtml(ev.name || "Sin nombre");
+
+      return (
+        '<div class="badge ' +
+        cls +
+        ' d-block text-truncate mb-1" ' +
+        'style="max-width: 100%; cursor: default;" ' +
+        'title="' +
+        escapeHtml(ev.name || "") +
+        " (" +
+        hhmm(ev.start) +
+        "-" +
+        hhmm(ev.end) +
+        ')">' +
+        label +
+        "</div>"
+      );
+    }
+
+    function render() {
+      var year = cursor.getFullYear();
+      var month = cursor.getMonth();
+
+      labelEl.textContent = MONTH_NAMES[month] + " " + year;
+
+      var firstDay = new Date(year, month, 1).getDay(); // 0 = Sun
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      var monthHasEvents = false;
+      var html = "";
+      var cell = 0; // running cell count across the grid
+
+      html += "<tr>";
+
+      // Leading blanks for the first week.
+      for (var b = 0; b < firstDay; b++) {
+        html += emptyCell();
+        cell++;
+      }
+
+      for (var day = 1; day <= daysInMonth; day++) {
+        if (cell > 0 && cell % 7 === 0) {
+          html += "</tr><tr>";
+        }
+
+        var key = dayKey(year, month, day);
+        var dayEvents = eventsByDay[key] || [];
+        if (dayEvents.length) monthHasEvents = true;
+
+        html += dayCell(day, dayEvents);
+        cell++;
+      }
+
+      // Trailing blanks to complete the final week.
+      while (cell % 7 !== 0) {
+        html += emptyCell();
+        cell++;
+      }
+
+      html += "</tr>";
+
+      bodyEl.innerHTML = html;
+
+      if (emptyEl) {
+        emptyEl.classList.toggle("d-none", monthHasEvents);
+      }
+    }
+
+    function emptyCell() {
+      return (
+        '<td class="bg-light" ' +
+        'style="height: 110px; vertical-align: top;"></td>'
+      );
+    }
+
+    function dayCell(day, dayEvents) {
+      var pills = "";
+      for (var i = 0; i < dayEvents.length; i++) {
+        pills += eventPill(dayEvents[i]);
+      }
+
+      return (
+        '<td style="height: 110px; vertical-align: top;">' +
+        '<div class="fw-bold text-muted mb-1">' +
+        day +
+        "</div>" +
+        pills +
+        "</td>"
+      );
+    }
+
+    window.setEvents = function (list) {
+      events = list;
+      eventsByDay = buildIndex(events);
+      render();
+    };
+
+    window.addEvent = function (ev) {
+      events.push(ev);
+      
+      var start = new Date(ev.start);
+      if (!isNaN(start.getTime())) {
+        var key = dayKey(start.getFullYear(), start.getMonth(), start.getDate());
+        if (!eventsByDay[key]) eventsByDay[key] = [];
+        eventsByDay[key].push(ev);
+      }
+      
+      render();
+    };
+
+  })(); 
+</script>
+
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script id="observable-listener">
+  (function () {
+    "use strict";
+    // Assumes the render code from before exposes these two hooks.
+    // addEvent(ev)  -> merge one event + re-render current month
+    // setEvents(list) -> replace all events + re-render
+
+    var socket = io(); // same-origin
+
+    socket.on("connect", function () {
+      socket.emit("join_calendar"); // ask server for the room + snapshot
+    });
+
+    socket.on("calendar:snapshot", function (list) {
+      if (!Array.isArray(list)) return; // sentinel guard on bad payload
+      if (typeof setEvents === "function") setEvents(list);
+    });
+
+    socket.on("calendar:created", function (ev) {
+      if (!ev || !ev.start) return; // guard malformed single event
+      if (typeof addEvent === "function") addEvent(ev);
+    });
+
+    socket.on("disconnect", function () {
+      // Optional: show a muted "reconnecting…" badge. No throw.
+    });
+  })();
+</script>

@@ -8,7 +8,7 @@ def get_logger(name="flask_app"):
     if logger.handlers:
         return logger
         
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
     
     # Stream logs to stdout for Docker compatibility
     handler = logging.StreamHandler(sys.stdout)

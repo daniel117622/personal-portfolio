@@ -34,10 +34,7 @@ class HomepageRepository:
             return None
             
         # Filter by type to get the main_topics document
-        doc = collection.find_one({"type": "main_topics"}, {"_id": 0})
-        if not doc or "data" not in doc:
-            logger.warning("Document 'main_topics' not found in collection or missing 'data' field.")
-            return None
+        doc = collection.find_one({"type": "main_topics"})
             
         data = doc.get("data", {})
         main_topic_data = data.get("main_topic", [])
@@ -62,8 +59,6 @@ class HomepageRepository:
             
         # Filter by type to get the social_activity document[cite: 2]
         doc = collection.find_one({"type": "social_activity"}, {"_id": 0})
-        if not doc or "data" not in doc:
-            return None
             
         data = doc.get("data", {})
         
