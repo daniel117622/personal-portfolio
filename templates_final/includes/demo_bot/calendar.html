@@ -1,59 +1,51 @@
 <section class="section section-md" style="padding: 3rem 0; background-color: #f9fafb; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   <div class="container container-wide" style="max-width: 1280px; margin: 0 auto; padding: 0 15px;">
-    
     <div class="row justify-content-center">
       <div class="col-lg-12">
+        <div style="background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 2rem; border: 1px solid #e5e7eb;">
 
-        <div style="background: #ffffff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 2rem; border: 1px solid #e5e7eb;">
-          
           <!-- Header / navigation -->
-          <div class="d-flex justify-content-between align-items-center mb-4" style="gap: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <button 
-              type="button" 
-              id="calPrevBtn"
-              style="padding: 0.5rem 1rem; border-radius: 2px; border: 1px solid #374151; color: #374151; background: transparent; font-weight: 500; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-size: 0.85rem;"
-              onmouseover="this.style.background='#374151'; this.style.color='#fff';" 
-              onmouseout="this.style.background='transparent'; this.style.color='#374151';"
-            >
-              &laquo; Semana Anterior
+          <div class="d-flex justify-content-between align-items-center mb-4" style="gap: 1rem;">
+            <button type="button" id="calPrevBtn"
+              style="padding: 0.5rem 0.75rem; border-radius: 2px; border: 1px solid #374151; color: #374151; background: transparent; font-weight: 500; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; white-space: nowrap;">
+              <!-- Bootstrap display utils toggle the two labels -->
+              <span class="d-none d-md-inline">&laquo; Semana Anterior</span>
+              <span class="d-inline d-md-none">&laquo; Ant.</span>
             </button>
 
-            <h3 class="mb-0 text-center" id="calWeekLabel" style="min-width: 280px; margin: 0; font-size: 1.5rem; font-weight: 600; color: #111827;">
+            <h3 class="mb-0 text-center" id="calWeekLabel"
+              style="margin: 0; font-weight: 600; color: #111827; font-size: 1.1rem;">
               <!-- Injected by JS -->
             </h3>
 
-            <button 
-              type="button" 
-              id="calNextBtn"
-              style="padding: 0.5rem 1rem; border-radius: 2px; border: 1px solid #374151; color: #374151; background: transparent; font-weight: 500; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-size: 0.85rem;"
-              onmouseover="this.style.background='#374151'; this.style.color='#fff';" 
-              onmouseout="this.style.background='transparent'; this.style.color='#374151';"
-            >
-              Siguiente Semana &raquo;
+            <button type="button" id="calNextBtn"
+              style="padding: 0.5rem 0.75rem; border-radius: 2px; border: 1px solid #374151; color: #374151; background: transparent; font-weight: 500; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; white-space: nowrap;">
+              <span class="d-none d-md-inline">Siguiente Semana &raquo;</span>
+              <span class="d-inline d-md-none">Sig. &raquo;</span>
             </button>
           </div>
 
           <!-- Status legend -->
-          <div class="d-flex flex-wrap mb-3" style="gap: 1rem; display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 0.75rem; font-weight: 600;">
+          <div class="d-flex flex-wrap align-items-center mb-3" style="gap: 1rem; font-size: 0.75rem; font-weight: 600;">
             <span style="background-color: #0f766e; color: white; padding: 4px 8px; border-radius: 2px; letter-spacing: 0.5px;">ACTIVE</span>
             <span style="background-color: #c2410c; color: white; padding: 4px 8px; border-radius: 2px; letter-spacing: 0.5px;">DECLINED</span>
             <span style="background-color: #475569; color: white; padding: 4px 8px; border-radius: 2px; letter-spacing: 0.5px;">CANCELED</span>
           </div>
 
-          <!-- Calendar grid host -->
-          <div style="overflow-x: auto; border: 1px solid #d1d5db; border-radius: 2px;">
+          <!-- DESKTOP: table grid (hidden below md) -->
+          <div class="d-none d-md-block" style="overflow-x: auto; border: 1px solid #d1d5db; border-radius: 2px;">
             <table style="width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; background: #fff;">
-              <thead id="calHead">
-                <!-- Columns injected by JS -->
-              </thead>
-              <tbody id="calBody">
-                <!-- Rows injected by JS -->
-              </tbody>
+              <thead id="calHead"></thead>
+              <tbody id="calBody"></tbody>
             </table>
           </div>
 
+          <!-- MOBILE: stacked day cards (hidden at md and up) -->
+          <div class="d-block d-md-none" id="calMobile"></div>
+
           <!-- Empty-state fallback -->
-          <p class="text-center mt-3 d-none" id="calEmptyState" style="margin-top: 2rem; padding: 2rem 1rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 2px; color: #6b7280; font-weight: 500; font-size: 0.95rem;">
+          <p class="text-center mt-3 d-none" id="calEmptyState"
+            style="margin-top: 2rem; padding: 2rem 1rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 2px; color: #6b7280; font-weight: 500; font-size: 0.95rem;">
             No hay reservaciones para esta semana.
           </p>
 
@@ -62,7 +54,6 @@
     </div>
   </div>
 </section>
-
 <!-- Include your events data -->
 <script id="calEventsData" type="application/json">
   {{ events | tojson | safe }}
@@ -74,10 +65,10 @@
 
     function readEvents() {
       var node = document.getElementById("calEventsData");
-      if (!node) return []; 
+      if (!node) return [];
       try {
         var parsed = JSON.parse(node.textContent || "[]");
-        if (!Array.isArray(parsed)) return []; 
+        if (!Array.isArray(parsed)) return [];
         return parsed;
       } catch (err) {
         return [];
@@ -92,14 +83,17 @@
     var DAY_NAMES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
     var STATUS_COLORS = {
-      ACTIVE:   { bg: '#f0fdf4', border: '#0f766e', text: '#115e59' }, 
-      DECLINED: { bg: '#fff7ed', border: '#c2410c', text: '#9a3412' }, 
-      CANCELED: { bg: '#f1f5f9', border: '#475569', text: '#334155' }  
+      ACTIVE:   { bg: '#f0fdf4', border: '#0f766e', text: '#115e59' },
+      DECLINED: { bg: '#fff7ed', border: '#c2410c', text: '#9a3412' },
+      CANCELED: { bg: '#f1f5f9', border: '#475569', text: '#334155' }
     };
 
     // Business hours to display (24h format)
-    var START_HOUR = 8; 
+    var START_HOUR = 8;
     var END_HOUR = 20;
+
+    // How many days to show on mobile: 1 = today only, 2 = today + tomorrow
+    var MOBILE_DAYS = 5;
 
     var events = readEvents();
     var eventsByDay = buildIndex(events);
@@ -107,6 +101,7 @@
 
     var headEl = document.getElementById("calHead");
     var bodyEl = document.getElementById("calBody");
+    var mobileEl = document.getElementById("calMobile");
     var labelEl = document.getElementById("calWeekLabel");
     var emptyEl = document.getElementById("calEmptyState");
     var prevBtn = document.getElementById("calPrevBtn");
@@ -150,7 +145,7 @@
       arr.sort(function(a, b) {
         var timeA = new Date(a.start).getTime();
         var timeB = new Date(b.start).getTime();
-        return timeA - timeB; 
+        return timeA - timeB;
       });
     }
 
@@ -159,17 +154,17 @@
       for (var i = 0; i < list.length; i++) {
         var ev = list[i];
         var start = new Date(ev.start);
-        if (isNaN(start.getTime())) continue; 
+        if (isNaN(start.getTime())) continue;
 
         var key = dayKey(start.getFullYear(), start.getMonth(), start.getDate());
         if (!idx[key]) idx[key] = [];
         idx[key].push(ev);
       }
-      
+
       for (var k in idx) {
         sortEventsArray(idx[k]);
       }
-      
+
       return idx;
     }
 
@@ -188,7 +183,7 @@
 
     function hhmm(iso) {
       var d = new Date(iso);
-      if (isNaN(d.getTime())) return "--:--"; 
+      if (isNaN(d.getTime())) return "--:--";
       var h = String(d.getHours()).padStart(2, "0");
       var m = String(d.getMinutes()).padStart(2, "0");
       return h + ":" + m;
@@ -308,12 +303,12 @@
       // 1. Render Header
       var theadHtml = '<tr style="background-color: #f3f4f6; border-bottom: 1px solid #d1d5db;">';
       theadHtml += '<th style="width: 80px; padding: 12px 8px; border-right: 1px solid #d1d5db; color: #4b5563; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; text-align: center;">Hora</th>';
-      
+
       for(var i = 0; i < 7; i++) {
          var isLast = (i === 6);
          var border = isLast ? '' : 'border-right: 1px solid #e5e7eb;';
-         theadHtml += '<th style="padding: 12px 8px; ' + border + ' color: #111827; font-weight: 600; font-size: 0.85rem; text-align: center;">' + 
-           DAY_NAMES[i] + ' ' + weekDays[i].getDate() + 
+         theadHtml += '<th style="padding: 12px 8px; ' + border + ' color: #111827; font-weight: 600; font-size: 0.85rem; text-align: center;">' +
+           DAY_NAMES[i] + ' ' + weekDays[i].getDate() +
          '</th>';
       }
       theadHtml += '</tr>';
@@ -366,9 +361,114 @@
 
       bodyEl.innerHTML = tbodyHtml;
 
+      // Mobile stacked day cards (same data, same week)
+      renderMobile(weekDays);
+
       if (emptyEl) {
         emptyEl.classList.toggle("d-none", weekHasEvents);
       }
+    }
+
+    // ---------------------------------------------------------------
+    // Mobile view (stacked day cards)
+    // ---------------------------------------------------------------
+
+    function startOfDay(d) {
+      var c = new Date(d);
+      c.setHours(0, 0, 0, 0);
+      return c;
+    }
+
+    function sameDay(a, b) {
+      return startOfDay(a).getTime() === startOfDay(b).getTime();
+    }
+
+    // Reuse the exact color logic from eventPill()
+    function colorFor(ev) {
+      var ACTIVE_PALETTES = [
+        { bg: '#f0fdf4', border: '#0f766e', text: '#115e59' },
+        { bg: '#f0f9ff', border: '#0284c7', text: '#0369a1' },
+        { bg: '#faf5ff', border: '#9333ea', text: '#7e22ce' },
+        { bg: '#fef3c7', border: '#d97706', text: '#b45309' }
+      ];
+      if (ev.status !== 'ACTIVE') {
+        return STATUS_COLORS[ev.status] || STATUS_COLORS.CANCELED;
+      }
+      var str = String(ev.id || ev.name || '0');
+      var hash = 5381;
+      for (var i = 0; i < str.length; i++) {
+        hash = ((hash * 33) ^ str.charCodeAt(i)) >>> 0;
+      }
+      return ACTIVE_PALETTES[hash % ACTIVE_PALETTES.length];
+    }
+
+    function mobileSlot(ev) {
+      var c = colorFor(ev);
+      var time = hhmm(ev.start) + " - " + hhmm(ev.end);
+      var name = escapeHtml(ev.name || "Sin nombre");
+      return '<div style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9; ' +
+        'border-left: 4px solid ' + c.border + '; background-color: ' + c.bg + '; ' +
+        'color: ' + c.text + ';">' +
+        '<div style="font-size: 0.75rem; font-weight: 600;">' + time + '</div>' +
+        '<div style="font-weight: 700; margin-top: 2px; font-size: 0.9rem;">' + name + '</div>' +
+      '</div>';
+    }
+
+    function mobileDayCard(day, isToday) {
+      var key = dayKey(day.getFullYear(), day.getMonth(), day.getDate());
+      var items = eventsByDay[key] || [];
+      var titleText = DAY_NAMES[day.getDay()] + " " + day.getDate() + (isToday ? " · Hoy" : "");
+
+      var headerStyle = isToday
+        ? 'background:#0f766e;color:#fff;'
+        : 'background:#f3f4f6;color:#111827;';
+
+      var html = '<div style="border:1px solid #d1d5db; border-radius:2px; ' +
+        'margin-bottom:1rem; overflow:hidden;">';
+
+      html += '<div class="d-flex justify-content-between align-items-baseline" ' +
+        'style="' + headerStyle + 'padding:0.75rem 1rem; font-weight:600; ' +
+        'border-bottom:1px solid #d1d5db;">' +
+        '<span>' + titleText + '</span>' +
+        '<span style="font-size:0.72rem; font-weight:500; opacity:0.85;">' +
+          items.length + ' reserva(s)</span>' +
+      '</div>';
+
+      if (items.length === 0) {
+        html += '<div class="text-center" style="padding:1rem; color:#9ca3af; ' +
+          'font-size:0.85rem;">Sin reservaciones</div>';
+      } else {
+        for (var i = 0; i < items.length; i++) {
+          html += mobileSlot(items[i]);
+        }
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    function renderMobile(weekDays) {
+      if (!mobileEl) return; // guard: nothing to render into
+
+      var today = startOfDay(new Date());
+
+      // Anchor on the first day of the week that is >= today,
+      // otherwise start at the week's first day so navigation still works.
+      var startIdx = 0;
+      for (var i = 0; i < weekDays.length; i++) {
+        if (startOfDay(weekDays[i]).getTime() >= today.getTime()) {
+          startIdx = i;
+          break;
+        }
+      }
+
+      var html = "";
+      for (var n = 0; n < MOBILE_DAYS && startIdx + n < weekDays.length; n++) {
+        var day = weekDays[startIdx + n];
+        html += mobileDayCard(day, sameDay(day, today));
+      }
+
+      mobileEl.innerHTML = html;
     }
 
     window.setEvents = function (list) {
@@ -379,22 +479,21 @@
 
     window.addEvent = function (ev) {
       events.push(ev);
-      
+
       var start = new Date(ev.start);
       if (!isNaN(start.getTime())) {
         var key = dayKey(start.getFullYear(), start.getMonth(), start.getDate());
         if (!eventsByDay[key]) eventsByDay[key] = [];
-        
+
         eventsByDay[key].push(ev);
-        sortEventsArray(eventsByDay[key]); 
+        sortEventsArray(eventsByDay[key]);
       }
-      
+
       render();
     };
 
-  })(); 
+  })();
 </script>
-
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script id="observable-listener">
   (function () {

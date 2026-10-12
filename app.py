@@ -9,12 +9,15 @@ from routes import register_blueprints
 
 from realtime.bus import bus
 
-logger = get_logger()
+from config import Config
+
+logger = get_logger(__name__)
 
 
 def create_app() -> Flask:
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="templates_final")
 
+    
     app.jinja_loader = ABTestingLoader(
         os.path.join(app.root_path, "templates_original"),
         os.path.join(app.root_path, "templates_final"),
@@ -22,6 +25,8 @@ def create_app() -> Flask:
     app.jinja_env.cache = None
 
     app.context_processor(inject_global_variables)
+
+
     register_error_handlers(app, logger)
     register_blueprints(app)
 
@@ -32,7 +37,6 @@ def create_app() -> Flask:
 
 
 app = create_app()
-
 
 if __name__ == "__main__":
     bus.socketio.run(app, debug=True, port=8000, host="0.0.0.0")
