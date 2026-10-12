@@ -1,77 +1,69 @@
-<section class="section section-md bg-default">
-  <div class="container container-wide">
-
-    <!-- Error-path styling notes are done via inline styles only -->
+<section class="section section-md" style="padding: 3rem 0; background-color: #f9fafb; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <div class="container container-wide" style="max-width: 1280px; margin: 0 auto; padding: 0 15px;">
+    
     <div class="row justify-content-center">
-      <div class="col-lg-10">
+      <div class="col-lg-12">
 
-        <!-- Header / month navigation -->
-        <div
-          class="d-flex justify-content-between align-items-center mb-4"
-          style="gap: 1rem;"
-        >
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            id="calPrevBtn"
-          >
-            &laquo; Anterior
-          </button>
+        <div style="background: #ffffff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 2rem; border: 1px solid #e5e7eb;">
+          
+          <!-- Header / navigation -->
+          <div class="d-flex justify-content-between align-items-center mb-4" style="gap: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <button 
+              type="button" 
+              id="calPrevBtn"
+              style="padding: 0.5rem 1rem; border-radius: 2px; border: 1px solid #374151; color: #374151; background: transparent; font-weight: 500; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-size: 0.85rem;"
+              onmouseover="this.style.background='#374151'; this.style.color='#fff';" 
+              onmouseout="this.style.background='transparent'; this.style.color='#374151';"
+            >
+              &laquo; Semana Anterior
+            </button>
 
-          <h3 class="mb-0 text-center" id="calMonthLabel"
-              style="min-width: 220px;">
-            &mdash;
-          </h3>
+            <h3 class="mb-0 text-center" id="calWeekLabel" style="min-width: 280px; margin: 0; font-size: 1.5rem; font-weight: 600; color: #111827;">
+              <!-- Injected by JS -->
+            </h3>
 
-          <button
-            type="button"
-            class="btn btn-primary"
-            id="calNextBtn"
-          >
-            Siguiente &raquo;
-          </button>
+            <button 
+              type="button" 
+              id="calNextBtn"
+              style="padding: 0.5rem 1rem; border-radius: 2px; border: 1px solid #374151; color: #374151; background: transparent; font-weight: 500; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-size: 0.85rem;"
+              onmouseover="this.style.background='#374151'; this.style.color='#fff';" 
+              onmouseout="this.style.background='transparent'; this.style.color='#374151';"
+            >
+              Siguiente Semana &raquo;
+            </button>
+          </div>
+
+          <!-- Status legend -->
+          <div class="d-flex flex-wrap mb-3" style="gap: 1rem; display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 0.75rem; font-weight: 600;">
+            <span style="background-color: #0f766e; color: white; padding: 4px 8px; border-radius: 2px; letter-spacing: 0.5px;">ACTIVE</span>
+            <span style="background-color: #c2410c; color: white; padding: 4px 8px; border-radius: 2px; letter-spacing: 0.5px;">DECLINED</span>
+            <span style="background-color: #475569; color: white; padding: 4px 8px; border-radius: 2px; letter-spacing: 0.5px;">CANCELED</span>
+          </div>
+
+          <!-- Calendar grid host -->
+          <div style="overflow-x: auto; border: 1px solid #d1d5db; border-radius: 2px;">
+            <table style="width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; background: #fff;">
+              <thead id="calHead">
+                <!-- Columns injected by JS -->
+              </thead>
+              <tbody id="calBody">
+                <!-- Rows injected by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty-state fallback -->
+          <p class="text-center mt-3 d-none" id="calEmptyState" style="margin-top: 2rem; padding: 2rem 1rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 2px; color: #6b7280; font-weight: 500; font-size: 0.95rem;">
+            No hay reservaciones para esta semana.
+          </p>
+
         </div>
-
-        <!-- Status legend -->
-        <div class="d-flex flex-wrap mb-3" style="gap: 1rem;">
-          <span class="badge bg-success">ACTIVE</span>
-          <span class="badge bg-warning text-dark">DECLINED</span>
-          <span class="badge bg-secondary">CANCELED</span>
-        </div>
-
-        <!-- Calendar grid host -->
-        <div class="table-responsive">
-          <table class="table table-bordered mb-0 align-top">
-            <thead class="table-light">
-              <tr class="text-center">
-                <th style="width: 14.28%;">Dom</th>
-                <th style="width: 14.28%;">Lun</th>
-                <th style="width: 14.28%;">Mar</th>
-                <th style="width: 14.28%;">Mié</th>
-                <th style="width: 14.28%;">Jue</th>
-                <th style="width: 14.28%;">Vie</th>
-                <th style="width: 14.28%;">Sáb</th>
-              </tr>
-            </thead>
-            <tbody id="calBody">
-              <!-- Rows injected by JS -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Empty-state fallback -->
-        <p
-          class="text-muted text-center mt-3 d-none"
-          id="calEmptyState"
-        >
-          No hay reservaciones para este mes.
-        </p>
-
       </div>
     </div>
   </div>
 </section>
 
+<!-- Include your events data -->
 <script id="calEventsData" type="application/json">
   {{ events | tojson | safe }}
 </script>
@@ -80,17 +72,14 @@
   (function () {
     "use strict";
 
-    // ---- Parse incoming data (sentinel-based: bail out on bad input) ----
     function readEvents() {
       var node = document.getElementById("calEventsData");
-      if (!node) return []; // sentinel: no data node -> empty calendar
-
+      if (!node) return []; 
       try {
         var parsed = JSON.parse(node.textContent || "[]");
-        if (!Array.isArray(parsed)) return []; // sentinel on wrong shape
+        if (!Array.isArray(parsed)) return []; 
         return parsed;
       } catch (err) {
-        // Swallow parse error, degrade gracefully.
         return [];
       }
     }
@@ -100,39 +89,41 @@
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
     ];
 
-    var STATUS_CLASS = {
-      ACTIVE: "bg-success",
-      DECLINED: "bg-warning text-dark",
-      CANCELED: "bg-secondary",
+    var DAY_NAMES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+
+    var STATUS_COLORS = {
+      ACTIVE:   { bg: '#f0fdf4', border: '#0f766e', text: '#115e59' }, 
+      DECLINED: { bg: '#fff7ed', border: '#c2410c', text: '#9a3412' }, 
+      CANCELED: { bg: '#f1f5f9', border: '#475569', text: '#334155' }  
     };
 
+    // Business hours to display (24h format)
+    var START_HOUR = 8; 
+    var END_HOUR = 20;
+
     var events = readEvents();
-
-    // Map events by "YYYY-M-D" for O(1) day lookups.
     var eventsByDay = buildIndex(events);
+    var cursor = initialCursor(events); // Cursor now represents Sunday of the active week
 
-    // Track the currently displayed month.
-    var cursor = initialCursor(events);
-
+    var headEl = document.getElementById("calHead");
     var bodyEl = document.getElementById("calBody");
-    var labelEl = document.getElementById("calMonthLabel");
+    var labelEl = document.getElementById("calWeekLabel");
     var emptyEl = document.getElementById("calEmptyState");
     var prevBtn = document.getElementById("calPrevBtn");
     var nextBtn = document.getElementById("calNextBtn");
 
-    // Guard clause: if the host markup is missing, do nothing.
-    if (!bodyEl || !labelEl) return;
+    if (!bodyEl || !headEl || !labelEl) return;
 
     if (prevBtn) {
       prevBtn.addEventListener("click", function () {
-        cursor.setMonth(cursor.getMonth() - 1);
+        cursor.setDate(cursor.getDate() - 7);
         render();
       });
     }
 
     if (nextBtn) {
       nextBtn.addEventListener("click", function () {
-        cursor.setMonth(cursor.getMonth() + 1);
+        cursor.setDate(cursor.getDate() + 7);
         render();
       });
     }
@@ -143,8 +134,24 @@
     // Helpers
     // ---------------------------------------------------------------
 
+    function getSunday(d) {
+      var nd = new Date(d);
+      var day = nd.getDay();
+      nd.setDate(nd.getDate() - day);
+      nd.setHours(0,0,0,0);
+      return nd;
+    }
+
     function dayKey(y, m, d) {
       return y + "-" + m + "-" + d;
+    }
+
+    function sortEventsArray(arr) {
+      arr.sort(function(a, b) {
+        var timeA = new Date(a.start).getTime();
+        var timeB = new Date(b.start).getTime();
+        return timeA - timeB; 
+      });
     }
 
     function buildIndex(list) {
@@ -152,22 +159,22 @@
       for (var i = 0; i < list.length; i++) {
         var ev = list[i];
         var start = new Date(ev.start);
-        if (isNaN(start.getTime())) continue; // guard: skip bad dates
+        if (isNaN(start.getTime())) continue; 
 
-        var key = dayKey(
-          start.getFullYear(),
-          start.getMonth(),
-          start.getDate()
-        );
+        var key = dayKey(start.getFullYear(), start.getMonth(), start.getDate());
         if (!idx[key]) idx[key] = [];
         idx[key].push(ev);
       }
+      
+      for (var k in idx) {
+        sortEventsArray(idx[k]);
+      }
+      
       return idx;
     }
 
     function initialCursor(list) {
-      // Prefer the earliest event month; else fall back to today.
-      if (!list.length) return new Date();
+      if (!list.length) return getSunday(new Date());
 
       var earliest = null;
       for (var i = 0; i < list.length; i++) {
@@ -175,13 +182,13 @@
         if (isNaN(d.getTime())) continue;
         if (earliest === null || d < earliest) earliest = d;
       }
-      if (earliest === null) return new Date();
-      return new Date(earliest.getFullYear(), earliest.getMonth(), 1);
+      if (earliest === null) return getSunday(new Date());
+      return getSunday(earliest);
     }
 
     function hhmm(iso) {
       var d = new Date(iso);
-      if (isNaN(d.getTime())) return "--:--"; // sentinel for bad time
+      if (isNaN(d.getTime())) return "--:--"; 
       var h = String(d.getHours()).padStart(2, "0");
       var m = String(d.getMinutes()).padStart(2, "0");
       return h + ":" + m;
@@ -195,98 +202,173 @@
         .replace(/"/g, "&quot;");
     }
 
-    function eventPill(ev) {
-      var cls = STATUS_CLASS[ev.status] || "bg-secondary";
-      var label =
-        hhmm(ev.start) + " " + escapeHtml(ev.name || "Sin nombre");
+    function formatWeekLabel(sun, sat) {
+      var m1 = MONTH_NAMES[sun.getMonth()];
+      var m2 = MONTH_NAMES[sat.getMonth()];
+      var y1 = sun.getFullYear();
+      var y2 = sat.getFullYear();
 
-      return (
-        '<div class="badge ' +
-        cls +
-        ' d-block text-truncate mb-1" ' +
-        'style="max-width: 100%; cursor: default;" ' +
-        'title="' +
-        escapeHtml(ev.name || "") +
-        " (" +
-        hhmm(ev.start) +
-        "-" +
-        hhmm(ev.end) +
-        ')">' +
-        label +
-        "</div>"
-      );
+      if (m1 === m2 && y1 === y2) {
+        return sun.getDate() + " - " + sat.getDate() + " " + m1 + " " + y1;
+      } else if (y1 === y2) {
+        return sun.getDate() + " " + m1.substring(0,3) + " - " + sat.getDate() + " " + m2.substring(0,3) + " " + y1;
+      } else {
+        return sun.getDate() + " " + m1.substring(0,3) + " " + y1 + " - " + sat.getDate() + " " + m2.substring(0,3) + " " + y2;
+      }
+    }
+
+    function getEventsForCell(dayKeyStr, hour) {
+      var dayEvents = eventsByDay[dayKeyStr] || [];
+      var res = [];
+      for (var i = 0; i < dayEvents.length; i++) {
+         var d = new Date(dayEvents[i].start);
+         if (d.getHours() === hour) {
+           res.push(dayEvents[i]);
+         }
+      }
+      return res;
+    }
+
+    var ROW_HEIGHT = 100; // pixels per 1-hour slot
+
+    function eventPill(ev) {
+      var ACTIVE_PALETTES = [
+        { bg: '#f0fdf4', border: '#0f766e', text: '#115e59' }, // 0: Green
+        { bg: '#f0f9ff', border: '#0284c7', text: '#0369a1' }, // 1: Blue
+        { bg: '#faf5ff', border: '#9333ea', text: '#7e22ce' }, // 2: Purple
+        { bg: '#fef3c7', border: '#d97706', text: '#b45309' }  // 3: Amber / Warm
+      ];
+
+      var c;
+      if (ev.status === 'ACTIVE') {
+        var str = String(ev.id || ev.name || '0');
+        var hash = 5381;
+        for (var i = 0; i < str.length; i++) {
+          hash = ((hash * 33) ^ str.charCodeAt(i)) >>> 0;
+        }
+        c = ACTIVE_PALETTES[hash % ACTIVE_PALETTES.length];
+      } else {
+        c = STATUS_COLORS[ev.status] || STATUS_COLORS.CANCELED;
+      }
+
+      var label = hhmm(ev.start) + " - " + hhmm(ev.end) + " " + escapeHtml(ev.name || "Sin nombre");
+
+      var s = new Date(ev.start);
+      var e = new Date(ev.end);
+      if (isNaN(s.getTime())) return '';
+      if (isNaN(e.getTime()) || e <= s) {
+        e = new Date(s.getTime() + 60 * 60000); // 1-hour fallback
+      }
+
+      var startHourDec = s.getHours() + (s.getMinutes() / 60);
+      var endHourDec = e.getHours() + (e.getMinutes() / 60);
+
+      // Clip to visible calendar bounds
+      var visualStart = Math.max(START_HOUR, startHourDec);
+      var visualEnd = Math.min(END_HOUR + 1, endHourDec);
+      if (visualStart >= visualEnd) return '';
+
+      var topPx = (visualStart - START_HOUR) * ROW_HEIGHT;
+      var heightPx = (visualEnd - visualStart) * ROW_HEIGHT;
+
+      return '<div style="' +
+        'position: absolute; ' +
+        'top: ' + topPx + 'px; ' +
+        'left: 0; right: 0; ' +
+        'height: ' + heightPx + 'px; ' +
+        'box-sizing: border-box; ' +
+        'background-color: ' + c.bg + '; ' +
+        'border: none; ' +
+        'border-left: 4px solid ' + c.border + '; ' +
+        'color: ' + c.text + '; ' +
+        'padding: 8px 10px; ' +
+        'border-radius: 0; ' +
+        'font-size: 0.78rem; ' +
+        'font-weight: 600; ' +
+        'overflow: hidden; ' +
+        'z-index: 5; ' +
+        'cursor: pointer;" title="' + escapeHtml(label) + '">' +
+        '<div>' + hhmm(ev.start) + ' - ' + hhmm(ev.end) + '</div>' +
+        '<div style="font-weight: 700; margin-top: 2px;">' + escapeHtml(ev.name || "Sin nombre") + '</div>' +
+      '</div>';
     }
 
     function render() {
-      var year = cursor.getFullYear();
-      var month = cursor.getMonth();
-
-      labelEl.textContent = MONTH_NAMES[month] + " " + year;
-
-      var firstDay = new Date(year, month, 1).getDay(); // 0 = Sun
-      var daysInMonth = new Date(year, month + 1, 0).getDate();
-
-      var monthHasEvents = false;
-      var html = "";
-      var cell = 0; // running cell count across the grid
-
-      html += "<tr>";
-
-      // Leading blanks for the first week.
-      for (var b = 0; b < firstDay; b++) {
-        html += emptyCell();
-        cell++;
+      // Build the 7 days of the active week
+      var weekDays = [];
+      for (var i = 0; i < 7; i++) {
+        var d = new Date(cursor);
+        d.setDate(d.getDate() + i);
+        weekDays.push(d);
       }
 
-      for (var day = 1; day <= daysInMonth; day++) {
-        if (cell > 0 && cell % 7 === 0) {
-          html += "</tr><tr>";
+      // Update Label
+      labelEl.textContent = formatWeekLabel(weekDays[0], weekDays[6]);
+
+      // 1. Render Header
+      var theadHtml = '<tr style="background-color: #f3f4f6; border-bottom: 1px solid #d1d5db;">';
+      theadHtml += '<th style="width: 80px; padding: 12px 8px; border-right: 1px solid #d1d5db; color: #4b5563; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; text-align: center;">Hora</th>';
+      
+      for(var i = 0; i < 7; i++) {
+         var isLast = (i === 6);
+         var border = isLast ? '' : 'border-right: 1px solid #e5e7eb;';
+         theadHtml += '<th style="padding: 12px 8px; ' + border + ' color: #111827; font-weight: 600; font-size: 0.85rem; text-align: center;">' + 
+           DAY_NAMES[i] + ' ' + weekDays[i].getDate() + 
+         '</th>';
+      }
+      theadHtml += '</tr>';
+      headEl.innerHTML = theadHtml;
+
+
+      // 2. Render Body Grid
+      var weekHasEvents = false;
+      var totalHours = (END_HOUR - START_HOUR + 1);
+      var totalHeight = totalHours * ROW_HEIGHT;
+
+      var tbodyHtml = '<tr>';
+
+      // Time Column with hour tick rows
+      tbodyHtml += '<td style="padding: 0; border-right: 1px solid #d1d5db; width: 80px; vertical-align: top; background: #f9fafb;">';
+      for (var h = START_HOUR; h <= END_HOUR; h++) {
+        var hh = String(h).padStart(2, "0") + ":00";
+        tbodyHtml += '<div style="height: ' + ROW_HEIGHT + 'px; box-sizing: border-box; border-bottom: 1px solid #e5e7eb; padding: 6px 4px; text-align: center; color: #6b7280; font-size: 0.82rem; font-weight: 500;">' + hh + '</div>';
+      }
+      tbodyHtml += '</td>';
+
+      // 7 Day Columns
+      for (var d = 0; d < 7; d++) {
+        var isLast = (d === 6);
+        var border = isLast ? '' : 'border-right: 1px solid #e5e7eb;';
+        var key = dayKey(weekDays[d].getFullYear(), weekDays[d].getMonth(), weekDays[d].getDate());
+        var dayEvents = eventsByDay[key] || [];
+
+        tbodyHtml += '<td style="padding: 0; ' + border + ' vertical-align: top; background-color: #ffffff; position: relative; height: ' + totalHeight + 'px;">';
+
+        // Background grid lines (fixed 1-hour rows)
+        tbodyHtml += '<div style="position: absolute; inset: 0; pointer-events: none;">';
+        for (var h = START_HOUR; h <= END_HOUR; h++) {
+          tbodyHtml += '<div style="height: ' + ROW_HEIGHT + 'px; box-sizing: border-box; border-bottom: 1px solid #f3f4f6;"></div>';
+        }
+        tbodyHtml += '</div>';
+
+        // Event Blocks layer
+        if (dayEvents.length > 0) {
+          weekHasEvents = true;
+          for (var e = 0; e < dayEvents.length; e++) {
+            tbodyHtml += eventPill(dayEvents[e]);
+          }
         }
 
-        var key = dayKey(year, month, day);
-        var dayEvents = eventsByDay[key] || [];
-        if (dayEvents.length) monthHasEvents = true;
-
-        html += dayCell(day, dayEvents);
-        cell++;
+        tbodyHtml += '</td>';
       }
 
-      // Trailing blanks to complete the final week.
-      while (cell % 7 !== 0) {
-        html += emptyCell();
-        cell++;
-      }
+      tbodyHtml += '</tr>';
 
-      html += "</tr>";
-
-      bodyEl.innerHTML = html;
+      bodyEl.innerHTML = tbodyHtml;
 
       if (emptyEl) {
-        emptyEl.classList.toggle("d-none", monthHasEvents);
+        emptyEl.classList.toggle("d-none", weekHasEvents);
       }
-    }
-
-    function emptyCell() {
-      return (
-        '<td class="bg-light" ' +
-        'style="height: 110px; vertical-align: top;"></td>'
-      );
-    }
-
-    function dayCell(day, dayEvents) {
-      var pills = "";
-      for (var i = 0; i < dayEvents.length; i++) {
-        pills += eventPill(dayEvents[i]);
-      }
-
-      return (
-        '<td style="height: 110px; vertical-align: top;">' +
-        '<div class="fw-bold text-muted mb-1">' +
-        day +
-        "</div>" +
-        pills +
-        "</td>"
-      );
     }
 
     window.setEvents = function (list) {
@@ -302,7 +384,9 @@
       if (!isNaN(start.getTime())) {
         var key = dayKey(start.getFullYear(), start.getMonth(), start.getDate());
         if (!eventsByDay[key]) eventsByDay[key] = [];
+        
         eventsByDay[key].push(ev);
+        sortEventsArray(eventsByDay[key]); 
       }
       
       render();
@@ -311,33 +395,27 @@
   })(); 
 </script>
 
-
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script id="observable-listener">
   (function () {
     "use strict";
-    // Assumes the render code from before exposes these two hooks.
-    // addEvent(ev)  -> merge one event + re-render current month
-    // setEvents(list) -> replace all events + re-render
 
-    var socket = io(); // same-origin
+    var socket = io();
 
     socket.on("connect", function () {
-      socket.emit("join_calendar"); // ask server for the room + snapshot
+      socket.emit("join_calendar");
     });
 
     socket.on("calendar:snapshot", function (list) {
-      if (!Array.isArray(list)) return; // sentinel guard on bad payload
+      if (!Array.isArray(list)) return; 
       if (typeof setEvents === "function") setEvents(list);
     });
 
     socket.on("calendar:created", function (ev) {
-      if (!ev || !ev.start) return; // guard malformed single event
+      if (!ev || !ev.start) return; 
       if (typeof addEvent === "function") addEvent(ev);
     });
 
-    socket.on("disconnect", function () {
-      // Optional: show a muted "reconnecting…" badge. No throw.
-    });
+    socket.on("disconnect", function () {});
   })();
 </script>

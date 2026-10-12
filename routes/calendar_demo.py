@@ -37,7 +37,7 @@ def _to_event(r: Reservation) -> dict:
         "id": r._id,
         "name": r.name,
         "start": r.date_start.isoformat(),
-        "end": r.date_end.isoformat(),
+        "end": r.date_end.isoformat(), 
         "student_id": r.student_id,
         "status": r.status,
     }
@@ -52,10 +52,12 @@ def _notify(event: str, payload: dict) -> None:
 # ---------------------------------------------------------------------------
 
 now = datetime.now().replace(hour=9, minute=0, second=0, microsecond=0)
-base = now.replace(day=1)
+base = now
 
-appoint_date = lambda day, hour=9, minute=0: base + timedelta(
-    days=day, hours=hour, minutes=minute
+appoint_date = lambda day=None, hour=9, minute=0: base + timedelta(
+    days=int(max(-5, min(5, round(random.gauss(0, 2))))) if day is None else day,
+    hours=hour - 9,
+    minutes=minute,
 )
 
 current_dates = CalendarData()
