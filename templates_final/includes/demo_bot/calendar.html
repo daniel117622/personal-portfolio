@@ -97,7 +97,7 @@
 
     var events = readEvents();
     var eventsByDay = buildIndex(events);
-    var cursor = initialCursor(events); // Cursor now represents Sunday of the active week
+    var cursor = initialCursor(events); // Cursor now represents MONDAY of the active week
 
     var headEl = document.getElementById("calHead");
     var bodyEl = document.getElementById("calBody");
@@ -129,10 +129,12 @@
     // Helpers
     // ---------------------------------------------------------------
 
-    function getSunday(d) {
+    // CHANGED: Start the week on Monday instead of Sunday
+    function getMonday(d) {
       var nd = new Date(d);
       var day = nd.getDay();
-      nd.setDate(nd.getDate() - day);
+      var diff = nd.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
+      nd.setDate(diff);
       nd.setHours(0,0,0,0);
       return nd;
     }
@@ -169,7 +171,7 @@
     }
 
     function initialCursor(list) {
-      if (!list.length) return getSunday(new Date());
+      if (!list.length) return getMonday(new Date());
 
       var earliest = null;
       for (var i = 0; i < list.length; i++) {
@@ -177,8 +179,8 @@
         if (isNaN(d.getTime())) continue;
         if (earliest === null || d < earliest) earliest = d;
       }
-      if (earliest === null) return getSunday(new Date());
-      return getSunday(earliest);
+      if (earliest === null) return getMonday(new Date());
+      return getMonday(earliest);
     }
 
     function hhmm(iso) {
@@ -197,18 +199,18 @@
         .replace(/"/g, "&quot;");
     }
 
-    function formatWeekLabel(sun, sat) {
-      var m1 = MONTH_NAMES[sun.getMonth()];
-      var m2 = MONTH_NAMES[sat.getMonth()];
-      var y1 = sun.getFullYear();
-      var y2 = sat.getFullYear();
+    function formatWeekLabel(startDay, endDay) {
+      var m1 = MONTH_NAMES[startDay.getMonth()];
+      var m2 = MONTH_NAMES[endDay.getMonth()];
+      var y1 = startDay.getFullYear();
+      var y2 = endDay.getFullYear();
 
       if (m1 === m2 && y1 === y2) {
-        return sun.getDate() + " - " + sat.getDate() + " " + m1 + " " + y1;
+        return startDay.getDate() + " - " + endDay.getDate() + " " + m1 + " " + y1;
       } else if (y1 === y2) {
-        return sun.getDate() + " " + m1.substring(0,3) + " - " + sat.getDate() + " " + m2.substring(0,3) + " " + y1;
+        return startDay.getDate() + " " + m1.substring(0,3) + " - " + endDay.getDate() + " " + m2.substring(0,3) + " " + y1;
       } else {
-        return sun.getDate() + " " + m1.substring(0,3) + " " + y1 + " - " + sat.getDate() + " " + m2.substring(0,3) + " " + y2;
+        return startDay.getDate() + " " + m1.substring(0,3) + " " + y1 + " - " + endDay.getDate() + " " + m2.substring(0,3) + " " + y2;
       }
     }
 
@@ -289,7 +291,7 @@
     }
 
     function render() {
-      // Build the 7 days of the active week
+      // Build 7 days in memory so mobile view continues to work fully if navigated on weekends
       var weekDays = [];
       for (var i = 0; i < 7; i++) {
         var d = new Date(cursor);
@@ -297,18 +299,19 @@
         weekDays.push(d);
       }
 
-      // Update Label
-      labelEl.textContent = formatWeekLabel(weekDays[0], weekDays[6]);
+      // Update Label (Mon to Fri)
+      labelEl.textContent = formatWeekLabel(weekDays[0], weekDays[4]);
 
-      // 1. Render Header
+      // 1. Render Header (ONLY 5 DAYS - Mon to Fri)
       var theadHtml = '<tr style="background-color: #f3f4f6; border-bottom: 1px solid #d1d5db;">';
       theadHtml += '<th style="width: 80px; padding: 12px 8px; border-right: 1px solid #d1d5db; color: #4b5563; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; text-align: center;">Hora</th>';
 
-      for(var i = 0; i < 7; i++) {
-         var isLast = (i === 6);
+      for(var i = 0; i < 5; i++) {
+         var isLast = (i === 4);
          var border = isLast ? '' : 'border-right: 1px solid #e5e7eb;';
+         var dayName = DAY_NAMES[weekDays[i].getDay()];
          theadHtml += '<th style="padding: 12px 8px; ' + border + ' color: #111827; font-weight: 600; font-size: 0.85rem; text-align: center;">' +
-           DAY_NAMES[i] + ' ' + weekDays[i].getDate() +
+           dayName + ' ' + weekDays[i].getDate() +
          '</th>';
       }
       theadHtml += '</tr>';
@@ -330,9 +333,9 @@
       }
       tbodyHtml += '</td>';
 
-      // 7 Day Columns
-      for (var d = 0; d < 7; d++) {
-        var isLast = (d === 6);
+      // 5 Day Columns (Mon to Fri)
+      for (var d = 0; d < 5; d++) {
+        var isLast = (d === 4);
         var border = isLast ? '' : 'border-right: 1px solid #e5e7eb;';
         var key = dayKey(weekDays[d].getFullYear(), weekDays[d].getMonth(), weekDays[d].getDate());
         var dayEvents = eventsByDay[key] || [];
@@ -361,7 +364,7 @@
 
       bodyEl.innerHTML = tbodyHtml;
 
-      // Mobile stacked day cards (same data, same week)
+      // Mobile stacked day cards (pass the full 7-day array so mobile weekend viewing functions properly)
       renderMobile(weekDays);
 
       if (emptyEl) {
@@ -383,7 +386,6 @@
       return startOfDay(a).getTime() === startOfDay(b).getTime();
     }
 
-    // Reuse the exact color logic from eventPill()
     function colorFor(ev) {
       var ACTIVE_PALETTES = [
         { bg: '#f0fdf4', border: '#0f766e', text: '#115e59' },
@@ -448,12 +450,10 @@
     }
 
     function renderMobile(weekDays) {
-      if (!mobileEl) return; // guard: nothing to render into
+      if (!mobileEl) return;
 
       var today = startOfDay(new Date());
 
-      // Anchor on the first day of the week that is >= today,
-      // otherwise start at the week's first day so navigation still works.
       var startIdx = 0;
       for (var i = 0; i < weekDays.length; i++) {
         if (startOfDay(weekDays[i]).getTime() >= today.getTime()) {
